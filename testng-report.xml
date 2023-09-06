@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2023-02-15T23:40:03 AEDT" name="DemoTest" finished-at="2023-02-15T23:40:03 AEDT" duration-ms="61">
+    <groups>
+    </groups>
+    <test started-at="2023-02-15T23:40:03 AEDT" name="Command line test" finished-at="2023-02-15T23:40:03 AEDT" duration-ms="61">
+      <class name="DemoTest">
+        <test-method signature="Addition_Test()[pri:0, instance:DemoTest@1283bb96, attributes: &lt;name: Case Key, value:[PVT-C500]&gt;, &lt;name: Tested Issue, value:[PVT-4]&gt;, &lt;name: Tested Sprint, value:[PVT Sprint 1]&gt;, &lt;name: Tested Environment, value:[UAT]&gt;]" started-at="2023-02-15T23:40:03 AEDT" name="Addition_Test" finished-at="2023-02-15T23:40:03 AEDT" duration-ms="7" status="PASS">
+          <reporter-output>
+          </reporter-output>
+          <custom-attributes>
+            <custom-attribute>
+              <name value="Case Key">
+              </name>
+              <value>
+                <![CDATA[[PVT-C500]]]>
+              </value>
+            </custom-attribute>
+            <custom-attribute>
+              <name value="Tested Issue">
+              </name>
+              <value>
+                <![CDATA[[PVT-4]]]>
+              </value>
+            </custom-attribute>
+            <custom-attribute>
+              <name value="Tested Sprint">
+              </name>
+              <value>
+                <![CDATA[[PVT Sprint 1]]]>
+              </value>
+            </custom-attribute>
+            <custom-attribute>
+              <name value="Tested Environment">
+              </name>
+              <value>
+                <![CDATA[[UAT]]]>
+              </value>
+            </custom-attribute>
+          </custom-attributes>
+        </test-method> <!-- Addition_Test -->
+        <test-method signature="Subtraction_Test()[pri:0, instance:DemoTest@1283bb96, attributes: &lt;name: Case Key, value:[PS-C193]&gt;, &lt;name: Tested Issue, value:[PS-85]&gt;, &lt;name: Tested Sprint, value:[Sprint 4]&gt;, &lt;name: Tested Environment, value:[SYS]&gt;]" started-at="2023-02-15T23:40:03 AEDT" name="Subtraction_Test" finished-at="2023-02-15T23:40:03 AEDT" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+          <custom-attributes>
+            <custom-attribute>
+              <name value="Case Key">
+              </name>
+              <value>
+                <![CDATA[[PS-C193]]]>
+              </value>
+            </custom-attribute>
+            <custom-attribute>
+              <name value="Tested Issue">
+              </name>
+              <value>
+                <![CDATA[[PS-85]]]>
+              </value>
+            </custom-attribute>
+            <custom-attribute>
+              <name value="Tested Sprint">
+              </name>
+              <value>
+                <![CDATA[[Sprint 4]]]>
+              </value>
+            </custom-attribute>
+            <custom-attribute>
+              <name value="Tested Environment">
+              </name>
+              <value>
+                <![CDATA[[SYS]]]>
+              </value>
+            </custom-attribute>
+          </custom-attributes>
+        </test-method> <!-- Subtraction_Test -->
+      </class> <!-- DemoTest -->
+    </test> <!-- Command line test -->
+  </suite> <!-- DemoTest -->
+</testng-results>
