@@ -1,10 +1,10 @@
-const { PROD_URL,API_VERSION } = require('../const');
-const axios = require('axios').default;
-const FormData = require('form-data');
-const fs = require('fs');
+import CONSTANTS from '../const.js';
+import axios from 'axios';
+import FormData from 'form-data';
+import fs from 'fs';
 
-const apiUrl = PROD_URL;
-const nodeApiVersion = API_VERSION;
+const apiUrl = CONSTANTS.PROD_URL;
+const nodeApiVersion = CONSTANTS.API_VERSION;
 
 async function sendResults(filePath, TOKEN){
     const bodyFormData = new FormData();
@@ -35,6 +35,6 @@ async function sendResults(filePath, TOKEN){
     }
   }
 
-module.exports = {
-    sendResults
-}
+export default{
+  sendResults
+};
