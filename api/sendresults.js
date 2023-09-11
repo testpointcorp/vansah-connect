@@ -3,14 +3,14 @@ import axios from 'axios';
 import FormData from 'form-data';
 import fs from 'fs';
 
+
 const apiUrl = CONSTANTS.PROD_URL;
 const nodeApiVersion = CONSTANTS.API_VERSION;
 
-async function sendResults(filePath, TOKEN){
+async function sendResults(filePath,TOKEN){
     const bodyFormData = new FormData();
     bodyFormData.append('testFormat', "TESTNG");
     bodyFormData.append('testPaths', fs.createReadStream(filePath));
-  
     try {
       const response = await axios({
         method: "post",
@@ -33,8 +33,8 @@ async function sendResults(filePath, TOKEN){
        console.error('Error:', error.request);
       } 
     }
-  }
+}
 
-export default{
+export {
   sendResults
 };

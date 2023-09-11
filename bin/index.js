@@ -1,28 +1,40 @@
 #!/usr/bin/env node
 import yargs from 'yargs';
-import req from '../api/sendResults.js';
-import display from '../utility/displayOutput.js';
-import { setEnvironmentVariable } from '../utility/endecodeToken.js';
+import {sendResults} from '../api/sendResults.js';
+import {successTxt} from '../utility/displayOutput.js';
+import { getEnvironmentVariable,setEnvironmentVariable } from '../utility/endecodeToken.js';
 
 
 const options = yargs.option("f", { alias: "filePath", describe: "Provide TestNg report File Path", type: "string", demandOption: false })
 .option("c",{ alias: "connectToken", describe:"Provide your Vansah Connect Token", type:"string", demandOption: false}).argv;
 
 
-if (options.filePath && options.connectToken) {
-  result(options.filePath, options.connectToken);
+if (options.filePath) {
+  await result(options.filePath);
 } 
-if(options.connectToken){
+else if(options.connectToken){
   setEnvironmentVariable(options.connectToken);
 }
 else {
   console.log("Usage: -c <connectToken> \n Usage: -f <filePath>");
 }
-
-async function result(filePath,connectToken){
+async function fetchTokenValue() {
   try {
-    let res = await req.sendResults(filePath,connectToken);
-    display.successTxt(res);
+      return await getEnvironmentVariable();
+  } catch (error) {
+      console.error('Error:', error.message);
+      throw error;  // Re-throwing the error 
+  }
+}
+
+async function result(filePath){
+  try {  
+    const tokenValue = await fetchTokenValue();
+    //console.log('Token Value:', tokenValue);
+    let res = await sendResults(filePath,tokenValue);
+    console.log(res);
+    //successTxt(res);
+  
   } catch (error) {
     console.error("Error:", error.message);
   }

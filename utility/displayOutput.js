@@ -5,6 +5,6 @@ function successTxt(message){
     chalkAnimation.rainbow(message);
 }
 
-export default {
+export {
     successTxt
 }
