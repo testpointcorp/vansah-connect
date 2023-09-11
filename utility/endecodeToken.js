@@ -48,7 +48,7 @@ function getEnvironmentVariable() {
 function setEnvironmentVariable(value) {
     return new Promise((resolve, reject) => {
         let command;
-
+        console.log(value);
         switch (process.platform) {
             case 'win32':
                 // Windows Command
