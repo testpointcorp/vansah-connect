@@ -45,11 +45,36 @@ function getEnvironmentVariable() {
     });
 }
 
-function setEnvironmentVariable(value){
-    //To set the environment value
+function setEnvironmentVariable(value) {
+    return new Promise((resolve, reject) => {
+        let command;
+
+        switch (process.platform) {
+            case 'win32':
+                // Windows Command
+                command = `setx TOKEN "${value}"`;
+                break;
+            case 'linux':
+            case 'darwin':
+                // Unix/Mac Command (this sets the variable for the session)
+                command = `export TOKEN="${value}"`;
+                break;
+            default:
+                reject(new Error('Unsupported platform.'));
+                return;
+        }
+
+        exec(command, (error) => {
+            if (error) {
+                reject(new Error(`Error setting $TOKEN in environment: ${error}`));
+            } else {
+                resolve(`Successfully set $TOKEN to ${value}`);
+            }
+        });
+    });
 }
 
 export {
     getEnvironmentVariable,
-    setEnvironmentVariable,
+    setEnvironmentVariable
 }

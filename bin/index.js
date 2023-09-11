@@ -16,7 +16,7 @@ else if(options.connectToken){
   setEnvironmentVariable(options.connectToken);
 }
 else {
-  console.log("Usage: -c <connectToken> \n Usage: -f <filePath>");
+  console.log("Usage: -c <connectToken> \nUsage: -f <filePath>");
 }
 async function fetchTokenValue() {
   try {
