@@ -13,10 +13,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 18.13.0
+          node-version: 16
       - run: npm install
       - run: npm install -g .
       - run: ls
-      - run: vansahConnect help
-      - run: vansahConnect --filePath ./testng-report.xml
+      - run: node ./bin/index.js --filePath ./testng-report.xml
 
