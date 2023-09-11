@@ -1,13 +1,13 @@
-import CONSTANTS from '../const.js';
+import {PROD_URL,API_VERSION} from '../const.js';
 import axios from 'axios';
 import FormData from 'form-data';
 import fs from 'fs';
 
 
-const apiUrl = CONSTANTS.PROD_URL;
-const nodeApiVersion = CONSTANTS.API_VERSION;
+const apiUrl = PROD_URL;
+const nodeApiVersion = API_VERSION;
 
-async function sendResults(filePath,TOKEN){
+async function sendResult(filePath,TOKEN){
     const bodyFormData = new FormData();
     bodyFormData.append('testFormat', "TESTNG");
     bodyFormData.append('testPaths', fs.createReadStream(filePath));
@@ -36,5 +36,5 @@ async function sendResults(filePath,TOKEN){
 }
 
 export {
-  sendResults
+  sendResult
 };

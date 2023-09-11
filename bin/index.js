@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import yargs from 'yargs';
-import {sendResults} from '../api/sendResults.js';
+import {sendResult} from '../api/sendResults.js';
 import {successTxt} from '../utility/displayOutput.js';
 import { getEnvironmentVariable,setEnvironmentVariable } from '../utility/endecodeToken.js';
 
@@ -31,7 +31,7 @@ async function result(filePath){
   try {  
     const tokenValue = await fetchTokenValue();
     //console.log('Token Value:', tokenValue);
-    let res = await sendResults(filePath,tokenValue);
+    let res = await sendResult(filePath,tokenValue);
     console.log(res);
     //successTxt(res);
   
