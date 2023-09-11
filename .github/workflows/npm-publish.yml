@@ -15,5 +15,6 @@ jobs:
         with:
           node-version: 16
       - run: npm install -g .
+      - run: npm install
       - run: vansahConnect --filePath ./testng-report.xml
 
