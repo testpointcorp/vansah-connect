@@ -16,6 +16,8 @@ jobs:
           node-version: 16
       - run: npm install
       - run: npm install -g .
+      - run: sudo apt-get install dos2unix
+      - run: dos2unix bin/index.js
       - run: vansahConnect -c ${{vars.TOKEN}}
       - run: vansahConnect -f ./testng-report.xml
 
