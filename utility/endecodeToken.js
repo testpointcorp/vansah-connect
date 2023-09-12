@@ -4,8 +4,8 @@ function getEnvironmentVariable() {
     return new Promise((resolve, reject) => {
         switch (process.platform) {
             case 'win32':
-                // Get environment variable on Windows
-                exec(`echo %TOKEN%` ||`echo $TOKEN`, (error, stdout) => {
+                // Get environment variable on Windows `echo %TOKEN%` ||
+                exec(`echo $TOKEN`, (error, stdout) => {
                     if (error) {
                         console.error(`Error fetching TOKEN value from environment: ${error}`);
                         reject(error);
