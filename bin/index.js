@@ -30,7 +30,7 @@ async function fetchTokenValue() {
 async function result(filePath){
   try {  
     const tokenValue = await fetchTokenValue();
-    //console.log('Token Value:', tokenValue);
+    console.log('Token Value:', tokenValue);
     let res = await sendResult(filePath,tokenValue);
     console.log(res);
     //successTxt(res);

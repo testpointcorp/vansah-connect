@@ -4,8 +4,9 @@ function getEnvironmentVariable() {
     return new Promise((resolve, reject) => {
         switch (process.platform) {
             case 'win32':
-                // Get environment variable on Windows `echo %TOKEN%` ||
-                exec(`echo $TOKEN`, (error, stdout) => {
+                // Get environment variable on Windows
+                const shell = 'cmd.exe';
+                exec(`echo %TOKEN%`,{shell},(error, stdout) => {
                     if (error) {
                         console.error(`Error fetching TOKEN value from environment: ${error}`);
                         reject(error);
@@ -51,26 +52,41 @@ function setEnvironmentVariable(value) {
         console.log(value);
         switch (process.platform) {
             case 'win32':
-                // Windows Command setx TOKEN "${value}"
-                command = `$env:TOKEN = "${value}"`;
+                // Windows Command
+                const shell = 'cmd.exe';
+                exec(`setx TOKEN "${value}"`,{shell},(error, stdout) => {
+                    if (error) {
+                        console.error(`Error fetching TOKEN value from environment: ${error}`);
+                        reject(error);
+                    } else {
+                        resolve(stdout.trim());
+                    }
+                });
                 break;
             case 'linux':
+                command = `export TOKEN="${value}"`;
+                exec(command, (error) => {
+                if (error) {
+                    reject(new Error(`Error setting $TOKEN in environment: ${error}`));
+                } else {
+                    resolve(`Successfully set $TOKEN to ${value}`);
+                }
+            });
             case 'darwin':
                 // Unix/Mac Command (this sets the variable for the session)
                 command = `export TOKEN="${value}"`;
+                exec(command, (error) => {
+                    if (error) {
+                        reject(new Error(`Error setting $TOKEN in environment: ${error}`));
+                    } else {
+                        resolve(`Successfully set $TOKEN to ${value}`);
+                    }
+                });
                 break;
             default:
                 reject(new Error('Unsupported platform.'));
                 return;
         }
-
-        exec(command, (error) => {
-            if (error) {
-                reject(new Error(`Error setting $TOKEN in environment: ${error}`));
-            } else {
-                resolve(`Successfully set $TOKEN to ${value}`);
-            }
-        });
     });
 }
 
