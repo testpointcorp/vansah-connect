@@ -1,4 +1,4 @@
-import { readFile, writeFile } from 'fs/promises'; // Use 'fs/promises' for Promise-based file operations
+import { readFile, writeFile } from 'fs/promises'; 
 
 const filePath = './config/config.json';
 
