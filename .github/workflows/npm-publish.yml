@@ -17,7 +17,7 @@ jobs:
       - run: npm install
       - run: npm install -g .
       - run: sudo apt-get install dos2unix
-      - run: dos2unix bin/index.js
+      - run: dos2unix api/sendResults.js
       - run: vansahConnect -c ${{vars.TOKEN}}
       - run: vansahConnect -f ./testng-report.xml
 
