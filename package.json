@@ -18,6 +18,7 @@
     "fs": "^0.0.1-security",
     "g": "^2.0.1",
     "inquirer": "^9.2.10",
+    "node-cache": "^5.1.2",
     "yargs": "13.2"
   },
   "bin": {

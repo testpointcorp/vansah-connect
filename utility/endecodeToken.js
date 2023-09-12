@@ -1,96 +1,27 @@
-import { exec } from 'child_process';
+import { readFile, writeFile } from 'fs/promises'; // Use 'fs/promises' for Promise-based file operations
 
-function getEnvironmentVariable() {
-    return new Promise((resolve, reject) => {
-        switch (process.platform) {
-            case 'win32':
-                // Get environment variable on Windows
-                const shell = 'cmd.exe';
-                exec(`echo %TOKEN%`,{shell},(error, stdout) => {
-                    if (error) {
-                        console.error(`Error fetching TOKEN value from environment: ${error}`);
-                        reject(error);
-                    } else {
-                        resolve(stdout.trim());
-                    }
-                });
-                break;
+const filePath = './config/config.json';
 
-            case 'linux':
-                // Get environment variable on Linux/Mac
-                exec(`echo $TOKEN`, (error, stdout) => {
-                    if (error) {
-                        console.error(`Error fetching TOKEN value from environment: ${error}`);
-                        reject(error);
-                    } else {
-                        resolve(stdout.trim());
-                    }
-                });
-                break;
-            case 'darwin':
-                // Get environment variable on Linux/Mac
-                exec(`echo $TOKEN`, (error, stdout) => {
-                    if (error) {
-                        console.error(`Error fetching TOKEN value from environment: ${error}`);
-                        reject(error);
-                    } else {
-                        resolve(stdout.trim());
-                    }
-                });
-                break;
-
-            default:
-                console.error('Unsupported platform.');
-                reject(new Error('Unsupported platform.'));
-        }
-    });
+async function getEnvironmentVariable() {
+  try {
+    const data = await readFile(filePath, 'utf8');
+    const jsonData = JSON.parse(data);
+    return jsonData.token;
+  } catch (error) {
+    console.error("Unable to retrieve Vansah Connect Token", error);
+    throw error;
+  }
 }
 
-function setEnvironmentVariable(value) {
-    return new Promise((resolve, reject) => {
-        let command;
-        console.log(value);
-        switch (process.platform) {
-            case 'win32':
-                // Windows Command
-                const shell = 'cmd.exe';
-                exec(`setx TOKEN "${value}"`,{shell},(error, stdout) => {
-                    if (error) {
-                        console.error(`Error fetching TOKEN value from environment: ${error}`);
-                        reject(error);
-                    } else {
-                        resolve(stdout.trim());
-                    }
-                });
-                break;
-            case 'linux':
-                command = `export TOKEN="${value}"`;
-                exec(command, (error) => {
-                if (error) {
-                    reject(new Error(`Error setting $TOKEN in environment: ${error}`));
-                } else {
-                    resolve(`Successfully set $TOKEN to ${value}`);
-                }
-            });
-            case 'darwin':
-                // Unix/Mac Command (this sets the variable for the session)
-                command = `export TOKEN="${value}"`;
-                exec(command, (error) => {
-                    if (error) {
-                        reject(new Error(`Error setting $TOKEN in environment: ${error}`));
-                    } else {
-                        resolve(`Successfully set $TOKEN to ${value}`);
-                    }
-                });
-                break;
-            default:
-                reject(new Error('Unsupported platform.'));
-                return;
-        }
-    });
+async function setEnvironmentVariable(value) {
+  const jsonData = JSON.stringify({ token: value }, null, 2);
+
+  try {
+    await writeFile(filePath, jsonData, 'utf8');
+  } catch (error) {
+    console.error("Unable to store Vansah Connect Token", error);
+    throw error;
+  }
 }
 
-export {
-    getEnvironmentVariable,
-    setEnvironmentVariable
-}
+export { getEnvironmentVariable, setEnvironmentVariable };
