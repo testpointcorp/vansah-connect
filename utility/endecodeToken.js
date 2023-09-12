@@ -51,8 +51,8 @@ function setEnvironmentVariable(value) {
         console.log(value);
         switch (process.platform) {
             case 'win32':
-                // Windows Command
-                command = `setx TOKEN "${value}"`;
+                // Windows Command setx TOKEN "${value}"
+                command = `$env:TOKEN = "${value}"`;
                 break;
             case 'linux':
             case 'darwin':
