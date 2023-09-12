@@ -16,8 +16,7 @@ jobs:
           node-version: 16
       - run: npm install
       - run: npm install -g .
-      - run: ls
-      - run: echo ${MY_TOKEN}
-      - run: vansahConnect -c ${MY_TOKEN}
+      - run: Get-ChildItem Env:
+      - run: vansahConnect -c ${{vars.TOKEN}}
       - run: vansahConnect -f ./testng-report.xml
 
