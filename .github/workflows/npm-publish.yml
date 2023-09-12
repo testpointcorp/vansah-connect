@@ -16,7 +16,6 @@ jobs:
           node-version: 16
       - run: npm install
       - run: npm install -g .
-      - run: [System.Environment]::GetEnvironmentVariables()
       - run: vansahConnect -c ${{vars.TOKEN}}
       - run: vansahConnect -f ./testng-report.xml
 
