@@ -1,5 +1,5 @@
 # vansah-connect
-<p>Single Solution for all the CI/CD tools to send results to Vansah - Test Management tool for Jira for Jira</p>
+<p>Single Solution for all the CI/CD tools to send results to Vansah - Test Management tool for Jira</p>
 
 # Steps to Install
 ```
