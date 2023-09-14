@@ -2,7 +2,7 @@ import { readFile, writeFile } from 'fs/promises';
 
 const filePath = './config/config.json';
 
-async function getEnvironmentVariable() {
+async function getConnectToken() {
   try {
     const data = await readFile(filePath, 'utf8');
     const jsonData = JSON.parse(data);
@@ -13,7 +13,7 @@ async function getEnvironmentVariable() {
   }
 }
 
-async function setEnvironmentVariable(value) {
+async function setConnectToken(value) {
   const jsonData = JSON.stringify({ token: value }, null, 2);
 
   try {
@@ -23,5 +23,14 @@ async function setEnvironmentVariable(value) {
     throw error;
   }
 }
+async function resetToken(){
+  const data = "";
+  try{
+    await writeFile(filePath,data,'utf-8');
+  }catch(error){
+    console.error("Unable to reset the Vansah Connect Token");
+    throw error;
+  };
+}
 
-export { getEnvironmentVariable, setEnvironmentVariable };
+export { getConnectToken, setConnectToken, resetToken };
