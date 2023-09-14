@@ -3,7 +3,7 @@
 
 # Steps to Install
 ```
-npm install vansah-connect
+npm install -g .
 ```
 # Use
 <p>It is necessary to add Your Connect Token to use Vansah - TM For Jira</p>
