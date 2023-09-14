@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import yargs from 'yargs';
-import {sendResult} from '../api/sendResults.js';
+import {sendResult} from '../api/sendresults.js';
 import {successTxt} from '../utility/displayOutput.js';
 import { getEnvironmentVariable,setEnvironmentVariable } from '../utility/endecodeToken.js';
 
