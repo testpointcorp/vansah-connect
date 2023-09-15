@@ -11,15 +11,11 @@
   "type": "module",
   "dependencies": {
     "axios": "^1.4.0",
-    "boxen": "4.0",
     "chalk": "2.4",
-    "chalk-animation": "^2.0.3",
-    "dos2unix": "^1.1.2",
+    "dotenv": "^16.3.1",
     "form-data": "^4.0.0",
     "fs": "^0.0.1-security",
-    "g": "^2.0.1",
-    "inquirer": "^9.2.10",
-    "node-cache": "^5.1.2",
+    "ora": "^7.0.1",
     "yargs": "13.2"
   },
   "bin": {
