@@ -19,4 +19,5 @@ jobs:
       - run: vansahConnect -c ${{vars.TOKEN}}
       - run: vansahConnect -f ./testng-report.xml
       - run: vansahConnect -r
+      - run: vansahConnect -t "PVT-C500" -s "P" -a "PVT-4"
 

@@ -34,27 +34,38 @@ async function sendResult(filePath,TOKEN){
       } 
     }
 }
-async function sendTestCaseResult(testCaseKey,testCaseResult,assetKey,TOKEN){ //Pending - implementation
-  const bodyFormData = new FormData();
-  bodyFormData.append('testFormat', "TESTNG");
-  bodyFormData.append('testPaths', fs.createReadStream(filePath));
+async function sendTestCaseResult(testCaseKey,testCaseResult,assetKey,TOKEN){ 
+  const body = {
+      asset:{
+        type:"issue",
+        key: `${assetKey}`
+      },
+      case:{
+        key: `${testCaseKey}`
+      },
+      result:{
+        id : `${testCaseResult}`
+      }
+  };
+  console.log(JSON.stringify(body));
   try {
     const response = await axios({
       method: "post",
-      url: `${apiUrl}/api/${nodeApiVersion}/testCase/import/XML`, // need to change api endpoint
-      data: bodyFormData,
+      url: `${apiUrl}/api/${nodeApiVersion}/run`,
+      data: JSON.stringify(body),
       headers: { 
         "Authorization": TOKEN,
-        "Content-Type": "multipart/form-data" 
+        "Content-Type": "application/json" 
       },
     });
+    console.log(response.data.message);
     return response.data.message;
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code outside of the range of 2xx
     console.error('Error:', error.response.data.message);
-    //console.error('Status:', error.response.status);
-    //console.error('Headers:', error.response.headers);
+    console.error('Status:', error.response.status);
+    console.error('Headers:', error.response.headers);
     } else if (error.request) {
       // The request was made but no response was received
      console.error('Error:', error.request);
