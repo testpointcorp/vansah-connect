@@ -1,6 +1,5 @@
 import ora from 'ora';
 import chalk from 'chalk';
-import { copyFileSync } from 'fs';
 
 const spinner = ora("...");
 function successTxt(message){
