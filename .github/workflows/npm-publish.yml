@@ -15,9 +15,9 @@ jobs:
         with:
           node-version: 16
       - run: npm install
-      - run: npm test
       - run: npm install -g .
       - run: vansahConnect -c ${{vars.TOKEN}}
+      - run: npm test
       - run: vansahConnect -f ./testng-report.xml
       - run: vansahConnect -t "PVT-C500" -s "2" -a "PVT-4"
 
