@@ -11,13 +11,13 @@ const options = yargs.option("f", { alias: "filePath", describe: "Provide TestNg
 .option("a",{alias:"assetKey",describe:"Provide your IssueKey or Folder Path",type:"string"}).argv;
 
 
-if (options.filePath && Object.keys(options).length <=4 ) {
+if (options.filePath && Object.keys(options).length <=5 ) {
   await result(options.filePath);
 } 
-else if(options.connectToken && Object.keys(options).length <=4){
+else if(options.connectToken && Object.keys(options).length <=5){
   await setConnectToken(options.connectToken);
 }
-else if(options.testCaseKey && Object.keys(options).length <=12){
+else if(options.testCaseKey && Object.keys(options).length <12){
   if(options.testCaseResult)
   { 
     if(options.assetKey){await testCaseResult(options.testCaseKey,options.testCaseResult,options.assetKey);}

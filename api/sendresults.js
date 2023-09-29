@@ -32,15 +32,13 @@ async function sendResult(filePath,TOKEN){
 }
 async function sendTestCaseResult(testCaseKey,testCaseResultName,assetKey,TOKEN){ 
   const assetObject = {};
-  if(countHyphens(assetKey)>1){
+  if(countHyphens(assetKey)>=1){
     assetObject.type = "folder";
     assetObject.identifier = `${assetKey}`;
-    console.log(assetObject);
   }
   else{
     assetObject.type = "issue";
     assetObject.key = `${assetKey}`;
-    console.log(assetObject);
   }
   const body = {
       asset:
@@ -53,7 +51,6 @@ async function sendTestCaseResult(testCaseKey,testCaseResultName,assetKey,TOKEN)
         name : `${testCaseResultName}`
       }
   };
-  console.log(body);
   try {
     const response = await axios({
       method: "post",
@@ -74,7 +71,7 @@ async function sendTestCaseResult(testCaseKey,testCaseResultName,assetKey,TOKEN)
     }
 }
 function countHyphens(str) {
-  const matches = str.match(/-/g); 
+  const matches = str.match('/'); 
   return matches ? matches.length : 0;
 }
 
