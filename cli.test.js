@@ -18,7 +18,7 @@ describe("API Tests", function() {
   });
   it("API should be able to Execute a Test Case against an Asset to Vansah", function(done){
     getConnectToken();
-    sendTestCaseResult("PVT-C500","2","PVT-4",process.env.TOKEN)
+    sendTestCaseResult("PVT-C500","PASSED","PVT-4",process.env.TOKEN)
       .then(function(result) {
         expect(result.data.message).to.equal("A new Test Run created.");
         done();  
@@ -40,7 +40,7 @@ describe("Validate validation.js functionality",function(){
       });
   });
   it("Validate testCaseResult()", function(done){
-    testCaseResult("PVT-C500","2","PVT-4")
+    testCaseResult("PVT-C500","FAILED","PVT-4")
         .then(function() {
           done();  
         })
