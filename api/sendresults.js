@@ -30,19 +30,30 @@ async function sendResult(filePath,TOKEN){
       } 
     }
 }
-async function sendTestCaseResult(testCaseKey,testCaseResult,assetKey,TOKEN){ 
+async function sendTestCaseResult(testCaseKey,testCaseResultName,assetKey,TOKEN){ 
+  const assetObject = {};
+  if(countHyphens(assetKey)>1){
+    assetObject.type = "folder";
+    assetObject.identifier = `${assetKey}`;
+    console.log(assetObject);
+  }
+  else{
+    assetObject.type = "issue";
+    assetObject.key = `${assetKey}`;
+    console.log(assetObject);
+  }
   const body = {
-      asset:{
-        type:"issue",
-        key: `${assetKey}`
-      },
+      asset:
+       assetObject
+      ,
       case:{
         key: `${testCaseKey}`
       },
       result:{
-        id : `${testCaseResult}`
+        name : `${testCaseResultName}`
       }
   };
+  console.log(body);
   try {
     const response = await axios({
       method: "post",
@@ -61,6 +72,10 @@ async function sendTestCaseResult(testCaseKey,testCaseResult,assetKey,TOKEN){
         return error.request;
       } 
     }
+}
+function countHyphens(str) {
+  const matches = str.match(/-/g); 
+  return matches ? matches.length : 0;
 }
 
 export {

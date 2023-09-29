@@ -11,16 +11,28 @@ const options = yargs.option("f", { alias: "filePath", describe: "Provide TestNg
 .option("a",{alias:"assetKey",describe:"Provide your IssueKey or Folder Path",type:"string"}).argv;
 
 
-if (options.filePath) {
+if (options.filePath && Object.keys(options).length <=4 ) {
   await result(options.filePath);
 } 
-else if(options.connectToken){
+else if(options.connectToken && Object.keys(options).length <=4){
   await setConnectToken(options.connectToken);
 }
-else if(options.testCaseKey && options.testCaseResult && options.assetKey){
-  await testCaseResult(options.testCaseKey,options.testCaseResult,options.assetKey);
+else if(options.testCaseKey && Object.keys(options).length <=12){
+  if(options.testCaseResult)
+  { 
+    if(options.assetKey){await testCaseResult(options.testCaseKey,options.testCaseResult,options.assetKey);}
+    else{
+    console.info("Usage: vansahConnect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
+    process.exit(1);
+    }
+  }
+  else{
+    console.info("Usage: vansahConnect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
+    process.exit(1);
+  }
+  
 }
 else {
-  console.info("Usage: -c <connectToken> \nUsage: -f <filePath>");
+  console.info("Usage:\nvansahConnect -c <connectToken> \nvansahConnect -f <filePath> \nvansahConnect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
   process.exit(1);
 }
