@@ -19,5 +19,5 @@ jobs:
       - run: vansahConnect -c ${{vars.TOKEN}}
       - run: npm test
       - run: vansahConnect -f ./testng-report.xml
-      - run: vansahConnect -t "PVT-C500" -s "2" -a "PVT-4"
+      - run: vansahConnect -t "PVT-C500" -s "PASSED" -a "PVT-4"
 
