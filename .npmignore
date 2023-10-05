@@ -1,0 +1,4 @@
+#Ignore Unit Tests
+cli.test.js
+#Ignore .github
+.github/

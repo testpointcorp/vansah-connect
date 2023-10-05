@@ -1,46 +1,38 @@
 #!/usr/bin/env node
-const yargs = require("yargs");
-const axios = require('axios').default;
-const FormData = require('form-data');
-const fs = require('fs');
+import yargs from 'yargs';
+import {result,testCaseResult} from '../utility/validation.js';
+import {setConnectToken } from '../utility/setGetToken.js';
 
 
-const apiUrl = "https://prod.vansahnode.app";
-const nodeApiVersion = "v1";
-
-const options = yargs.usage("Usage: -f <filePath> -c <connectToken>")
-.option("f", { alias: "filePath", describe: "Provide TestNg report File Path", type: "string", demandOption: true })
-.option("c",{ alias: "connectToken", describe:"Provide your Vansah Connect Token", type:"string", demandOption: true}).argv;
-
+const options = yargs.option("f", { alias: "filePath", describe: "Provide TestNg report File Path", type: "string", demandOption: false })
+.option("c",{ alias: "connectToken", describe:"Provide your Vansah Connect Token", type:"string", demandOption: false})
+.option("t",{alias:"testCaseKey",describe:"Provide your Test Case Key",type:"string"})
+.option("s",{alias:"testCaseResult",describe:"Use to Pass or Fail the overall Test Case Result",type:"string"})
+.option("a",{alias:"assetKey",describe:"Provide your IssueKey or Folder Path",type:"string"}).argv;
 
 
-sendFileToVansah(options.filePath,options.connectToken);
-
-async function sendFileToVansah(filePath, TOKEN){
-  const bodyFormData = new FormData();
-  bodyFormData.append('testFormat', "TESTNG");
-  bodyFormData.append('testPaths', fs.createReadStream(filePath));
-
-  try {
-    const response = await axios({
-      method: "post",
-      url: `${apiUrl}/api/${nodeApiVersion}/testCase/import/XML`,
-      data: bodyFormData,
-      headers: { 
-        "Authorization": TOKEN,
-        "Content-Type": "multipart/form-data" 
-      },
-    });
-    console.log(response.data.message);
-  } catch (error) {
-    if (error.response) {
-      // The request was made and the server responded with a status code outside of the range of 2xx
-    console.error('Error:', error.response.data.message);
-    //console.error('Status:', error.response.status);
-    //console.error('Headers:', error.response.headers);
-    } else if (error.request) {
-      // The request was made but no response was received
-     console.error('Error:', error.request);
-    } 
+if (options.filePath && Object.keys(options).length <=5 ) {
+  await result(options.filePath);
+} 
+else if(options.connectToken && Object.keys(options).length <=5){
+  await setConnectToken(options.connectToken);
+}
+else if(options.testCaseKey && Object.keys(options).length <12){
+  if(options.testCaseResult)
+  { 
+    if(options.assetKey){await testCaseResult(options.testCaseKey,options.testCaseResult,options.assetKey);}
+    else{
+    console.info("Usage: vansahConnect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
+    process.exit(1);
+    }
   }
+  else{
+    console.info("Usage: vansahConnect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
+    process.exit(1);
+  }
+  
+}
+else {
+  console.info("Usage:\nvansahConnect -c <connectToken> \nvansahConnect -f <filePath> \nvansahConnect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
+  process.exit(1);
 }
