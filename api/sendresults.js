@@ -32,7 +32,7 @@ async function sendResult(filePath,TOKEN){
 }
 async function sendTestCaseResult(testCaseKey,testCaseResultName,assetKey,TOKEN){ 
   const assetObject = {};
-  if(countHyphens(assetKey)>=1){
+  if(countHyphens(assetKey)>1){
     assetObject.type = "folder";
     assetObject.identifier = `${assetKey}`;
   }
@@ -71,8 +71,7 @@ async function sendTestCaseResult(testCaseKey,testCaseResultName,assetKey,TOKEN)
     }
 }
 function countHyphens(str) {
-  const matches = str.match('/'); 
-  return matches ? matches.length : 0;
+  return str.split('-').length - 1;
 }
 
 export {

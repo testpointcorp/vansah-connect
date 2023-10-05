@@ -20,4 +20,4 @@ jobs:
       - run: npm test
       - run: vansahConnect -f ./testng-report.xml
       - run: vansahConnect -t "PVT-C500" -s "PASSED" -a "PVT-4"
-
+      - run: vansahConnect -t "PVT-C500" -s "PASSED" -a "cb7c7c7a-5efc-11ee-bf34-eef1749e5133"
