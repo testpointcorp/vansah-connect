@@ -3,18 +3,25 @@
 
 # Steps to Install
 ```
-npm install -g .
+npm install -g vansah-connect
 ```
 # Use
 <p>It is necessary to add Your Connect Token to use Vansah - TM For Jira</p>
 
 ```
-vansahConnect -c <Your Connect Token>
+vansah-connect -c <Your Connect Token>
 ```
 
 <p>Currently Vansah only supports TestNg results *.xml based files</p>
 
 ```
-vansahConnect -f <FilePath> 
+vansah-connect -f <FilePath> 
+
+```
+
+<p>Send Test Case Results Directly to Vansah - TM For Jira</p>
+
+```
+vansah-connect -t <testCaseKey> -s <testCaseResultName> -a <assetKey/testFolderIdentifier>
 
 ```
