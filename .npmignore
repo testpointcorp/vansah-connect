@@ -2,3 +2,5 @@
 cli.test.js
 #Ignore .github
 .github/
+#Ignore testng-report.xml
+testng-report.xml
