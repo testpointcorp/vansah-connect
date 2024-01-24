@@ -6,14 +6,14 @@ export async function result(filePath){
     try {  
       const tokenValue = await getConnectToken();
       if (typeof tokenValue === 'undefined') {
-        onCLIError("Unable to retrieve Vansah Connect Token \nPlease run vansahConnect -c 'Your Token Value'");
+        onCLIError("Unable to retrieve Vansah Connect Token \nPlease run vansah-connect -c 'Your Token Value'");
         process.exit(1);
       }
       else{
           beforeResult("Uploading Results to Vansah",false);
           sendResult(filePath,tokenValue).then(function(result){
           if(result.status > 200 && result.status < 500){
-            onCLIError(`${result.data.message} \nPlease check your Vansah Connect Token \nRun vansahConnect -c 'Your Token Value' to update the Connect Token`);
+            onCLIError(`${result.data.message} \nPlease check your Vansah Connect Token \nRun vansah-connect -c 'Your Token Value' to update the Connect Token`);
             process.exit(1);
           }
           else if(result.status == 200){
@@ -31,7 +31,7 @@ export async function result(filePath){
         
       }  
     } catch (error) {
-      onCLIError("Unable to retrieve Vansah Connect Token \nPlease run vansahConnect -c 'Your Token Value");
+      onCLIError("Unable to retrieve Vansah Connect Token \nPlease run vansah-connect -c 'Your Token Value");
       process.exit(1);
     }
   }
@@ -39,13 +39,13 @@ export async function testCaseResult(testCaseKey,testCaseResult,assetKey){
     try {  
       const tokenValue = await getConnectToken();
       if (typeof tokenValue === 'undefined') {
-        console.log("Unable to retrieve Vansah Connect Token \nPlease run vansahConnect -c 'Your Token Value'");
+        console.log("Unable to retrieve Vansah Connect Token \nPlease run vansah-connect -c 'Your Token Value'");
       }
       else{
         beforeResult("Uploading Results to Vansah",false);
         await sendTestCaseResult(testCaseKey,testCaseResult,assetKey,tokenValue).then(function(result){
           if(result.status > 200 && result.status < 500){
-            onCLIError(`${result.data.message} \nPlease check your Vansah Connect Token \nRun vansahConnect -c 'Your Token Value' to update the Connect Token`);
+            onCLIError(`${result.data.message} \nPlease check your Vansah Connect Token \nRun vansah-connect -c 'Your Token Value' to update the Connect Token`);
             process.exit(1);
           }
           else if(result.status == 200){       
@@ -60,7 +60,7 @@ export async function testCaseResult(testCaseKey,testCaseResult,assetKey){
         });
       }
     }catch (error) {
-      onCLIError("Unable to retrieve Vansah Connect Token \nPlease run vansahConnect -c 'Your Token Value");
+      onCLIError("Unable to retrieve Vansah Connect Token \nPlease run vansah-connect -c 'Your Token Value");
       process.exit(1);
     }
   }    

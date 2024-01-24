@@ -22,17 +22,17 @@ else if(options.testCaseKey && Object.keys(options).length <12){
   { 
     if(options.assetKey){await testCaseResult(options.testCaseKey,options.testCaseResult,options.assetKey);}
     else{
-    console.info("Usage: vansahConnect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
+    console.info("Usage: vansah-connect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
     process.exit(1);
     }
   }
   else{
-    console.info("Usage: vansahConnect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
+    console.info("Usage: vansah-connect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
     process.exit(1);
   }
   
 }
 else {
-  console.info("Usage:\nvansahConnect -c <connectToken> \nvansahConnect -f <filePath> \nvansahConnect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
+  console.info("Usage:\nvansah-connect -c <connectToken> \nvansah-connect -f <filePath> \nvansah-connect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
   process.exit(1);
 }

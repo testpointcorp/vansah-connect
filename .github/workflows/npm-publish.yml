@@ -5,7 +5,7 @@ name: Node.js Package
 
 on:
   push:
-    branches: [ VFJTM-2946 ]
+    branches: [ VFJTM-3485 ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,8 +16,7 @@ jobs:
           node-version: 16
       - run: npm install
       - run: npm install -g .
-      - run: vansahConnect -c ${{vars.TOKEN}}
-      - run: npm test
-      - run: vansahConnect -f ./testng-report.xml
-      - run: vansahConnect -t "PVT-C500" -s "PASSED" -a "PVT-4"
-      - run: vansahConnect -t "PVT-C500" -s "PASSED" -a "cb7c7c7a-5efc-11ee-bf34-eef1749e5133"
+      - run: vansah-connect -c ${{vars.TOKEN}}
+      - run: vansah-connect -f ./testng-report.xml
+      - run: vansah-connect -t "PVT-C500" -s "failed" -a "PVT-4"
+
