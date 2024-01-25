@@ -4,3 +4,5 @@ cli.test.js
 .github/
 #Ignore testng-report.xml
 testng-report.xml
+#Ignore
+.env
