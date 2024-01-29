@@ -31,20 +31,12 @@
     "url": "git+https://github.com/testpointcorp/vansah-connect.git"
   },
   "keywords": [
-    "Vansah",
-    "Test",
-    "Management",
-    "for",
-    "Jira",
-    "Test",
-    "Runs",
-    "Test",
-    "Execution",
-    "Test",
-    "Results",
-    "Uploads",
-    "Selenium",
-    "TestNG"
+    "vansah",
+    "test-management",
+    "test-run",
+    "test-execution",
+    "test-result-upload",
+    "testNG"
   ],
   "bugs": {
     "url": "https://github.com/testpointcorp/vansah-connect/issues"
