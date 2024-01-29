@@ -28,4 +28,4 @@ vansah-connect -t <testCaseKey> -s <testCaseResultName> -a <assetKey/testFolderI
 
 ## Developed By
 
-* Testpoint (https://testpoint.com.au/)
+* Vansah (https://vansah.com/)
