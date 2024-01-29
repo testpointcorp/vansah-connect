@@ -25,3 +25,7 @@ vansah-connect -f <FilePath>
 vansah-connect -t <testCaseKey> -s <testCaseResultName> -a <assetKey/testFolderIdentifier>
 
 ```
+
+## Developed By
+
+* Testpoint (https://testpoint.com.au/)
