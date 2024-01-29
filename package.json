@@ -1,12 +1,12 @@
 {
-  "name": "vansah-connect",
+  "name": "@vansah/vansah-connect",
   "version": "1.0.0",
-  "description": "Import Automation results into \"Vansah - A Complete Test Management tool for Jira\"",
+  "description": "A Single Solution for all the CI/CD tools to send Test results to Vansah Test Management for Jira",
   "main": "bin/index.js",
   "scripts": {
     "test": "mocha -r esm cli.test.js --timeout 10000"
   },
-  "author": "Testpoint",
+  "author": "Vansah",
   "license": "ISC",
   "type": "module",
   "dependencies": {
@@ -19,11 +19,35 @@
     "yargs": "13.2"
   },
   "bin": {
-    "vansah-connect": "./bin/index.js"
+    "vansah-connect": "bin/index.js"
   },
   "devDependencies": {
     "chai": "^4.3.8",
     "esm": "^3.2.25",
     "mocha": "^10.2.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/testpointcorp/vansah-connect.git"
+  },
+  "keywords": [
+    "Vansah",
+    "Test",
+    "Management",
+    "for",
+    "Jira",
+    "Test",
+    "Runs",
+    "Test",
+    "Execution",
+    "Test",
+    "Results",
+    "Uploads",
+    "Selenium",
+    "TestNG"
+  ],
+  "bugs": {
+    "url": "https://github.com/testpointcorp/vansah-connect/issues"
+  },
+  "homepage": "https://github.com/testpointcorp/vansah-connect#readme"
 }

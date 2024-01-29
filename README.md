@@ -1,5 +1,5 @@
 # vansah-connect
-<p>Single Solution for all the CI/CD tools to send results to Vansah - Test Management tool for Jira</p>
+<p>A Single Solution for all the CI/CD tools to send Test results to Vansah Test Management for Jira</p>
 
 # Steps to Install
 ```
@@ -19,7 +19,7 @@ vansah-connect -f <FilePath>
 
 ```
 
-<p>Send Test Case Results Directly to Vansah - TM For Jira</p>
+<p>Send Test Case Results Directly to Vansah Test Management for Jira</p>
 
 ```
 vansah-connect -t <testCaseKey> -s <testCaseResultName> -a <assetKey/testFolderIdentifier>
