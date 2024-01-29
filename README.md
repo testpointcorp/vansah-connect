@@ -6,7 +6,7 @@
 npm i @vansah/vansah-connect
 ```
 # Use
-<p>It is necessary to add Your Connect Token to use Vansah - TM For Jira</p>
+<p>It is necessary to add Your Connect Token to use Vansah Test Management for Jira</p>
 
 ```
 vansah-connect -c <Your Connect Token>
