@@ -66,7 +66,7 @@ $ vansah-connect -f ./YOUR-TESTNG_FILEPATH.xml
 ```
 
 
-> **Note** : Set up your `TestNG` file to include [`custom attributes`](Use-of-Custom-Attributes) for each of your test functions. This way, after running the automation suite, all test methods will have sufficient information to log the results into `Vansah Test Management for Jira`.
+> **Note** : Set up your `TestNG` file to include [`custom attributes`](#Use-of-Custom-Attributes) for each of your test functions. This way, after running the automation suite, all test methods will have sufficient information to log the results into `Vansah Test Management for Jira`.
 
 ## Use of Custom Attributes
 
