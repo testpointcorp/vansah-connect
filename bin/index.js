@@ -8,7 +8,7 @@ const options = yargs.option("f", { alias: "filePath", describe: "Provide TestNg
 .option("c",{ alias: "connectToken", describe:"Provide your Vansah Connect Token", type:"string", demandOption: false})
 .option("t",{alias:"testCaseKey",describe:"Provide your Test Case Key",type:"string"})
 .option("s",{alias:"testCaseResult",describe:"Use `passed` or `failed` to add the Test Case Result",type:"string"})
-.option("a",{alias:"assetKey",describe:"Provide your IssueKey or Folder Path",type:"string"}).argv;
+.option("a",{alias:"assetKey",describe:"Provide your IssueKey or Folder Path",type:"string"}).version().help().argv;
 
 
 if (options.filePath && Object.keys(options).length <=5 ) {

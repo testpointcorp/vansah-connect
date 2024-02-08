@@ -1,6 +1,6 @@
 {
   "name": "@vansah/vansah-connect",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Single Solution for all the CI/CD tools to send Test results to Vansah Test Management for Jira",
   "main": "bin/index.js",
   "scripts": {
