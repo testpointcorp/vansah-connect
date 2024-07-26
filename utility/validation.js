@@ -26,12 +26,10 @@ export async function result(filePath){
             process.exit(1);
           }
           
-        });
-    
-        
+        }); 
       }  
     } catch (error) {
-      onCLIError("Unable to retrieve Vansah Connect Token \nPlease run vansah-connect -c 'Your Token Value");
+      onCLIError(error);
       process.exit(1);
     }
   }
@@ -45,7 +43,7 @@ export async function testCaseResult(testCaseKey,testCaseResult,assetKey){
         beforeResult("Uploading Results to Vansah",false);
         await sendTestCaseResult(testCaseKey,testCaseResult,assetKey,tokenValue).then(function(result){
           if(result.status > 200 && result.status < 500){
-            onCLIError(`${result.data.message} \nPlease check your Vansah Connect Token \nRun vansah-connect -c 'Your Token Value' to update the Connect Token`);
+            onCLIError(`${result.data.message}`);
             process.exit(1);
           }
           else if(result.status == 200){       
@@ -54,13 +52,13 @@ export async function testCaseResult(testCaseKey,testCaseResult,assetKey){
           process.exit(0);
           }
           else{
-            onCLIError(`${result} \n Vansah Server is Under Maintenance`);
+            onCLIError(`${result}`);
             process.exit(1);
           }
         });
       }
     }catch (error) {
-      onCLIError("Unable to retrieve Vansah Connect Token \nPlease run vansah-connect -c 'Your Token Value");
+      onCLIError(error);
       process.exit(1);
     }
   }    
