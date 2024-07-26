@@ -5,7 +5,7 @@ name: Node.js Package
 
 on:
   push:
-    branches: [ VFJTM-3485 ]
+    branches: [ VANS-1711 ]
 jobs:
   build:
     runs-on: ubuntu-latest
