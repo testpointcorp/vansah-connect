@@ -23,7 +23,7 @@ async function setConnectToken(value) {
   try {
     if(fileExists(filePath)==false){
       fs.writeFileSync(filePath,`TOKEN=${value}`);
-      console.info("Vansah Connect Token has been saved successfully under");
+      console.info("Vansah Connect Token has been saved successfully");
     }
     else {
       const fileContent = fs.readFileSync(filePath,'utf-8').split(os.EOL);
@@ -32,7 +32,7 @@ async function setConnectToken(value) {
       }));
       fileContent.splice(matchKey,1,`TOKEN=${value}`);
       fs.writeFileSync(filePath,fileContent.join(os.EOL));
-      console.info("Vansah Connect Token has been updated successfully under");
+      console.info("Vansah Connect Token has been updated successfully");
     }
   } catch (error) {
     console.error("Unable to create .env file", error);
