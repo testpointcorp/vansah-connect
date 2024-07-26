@@ -30,7 +30,7 @@ async function sendResult(filePath,TOKEN){
       } 
     }
 }
-async function sendTestCaseResult(testCaseKey,testCaseResultName,assetKey,TOKEN){ 
+async function sendTestCaseResult(testCaseKey,testCaseResultName,assetKey,token){ 
   const assetObject = {};
   if(countHyphens(assetKey)>1){
     assetObject.type = "folder";
@@ -57,7 +57,7 @@ async function sendTestCaseResult(testCaseKey,testCaseResultName,assetKey,TOKEN)
       url: `${apiUrl}/api/${nodeApiVersion}/run`,
       data: JSON.stringify(body),
       headers: { 
-        "Authorization": TOKEN,
+        "Authorization": token,
         "Content-Type": "application/json" 
       },
     });

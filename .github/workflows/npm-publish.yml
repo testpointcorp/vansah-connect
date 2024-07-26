@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment : PROD
     steps:
       - uses: actions/checkout@v4.1.1
       - uses: actions/setup-node@v4.0.1
@@ -16,7 +17,7 @@ jobs:
           node-version: 18
       - run: npm install
       - run: npm install -g .
-      - run: vansah-connect -c ${{vars.TOKEN}}
+      - run: vansah-connect -c ${{vars.VANSAH_TOKEN}}
       - run: vansah-connect -f ./testng-report.xml
       - run: vansah-connect -t "PVT-C500" -s "failed" -a "PVT-4"
 

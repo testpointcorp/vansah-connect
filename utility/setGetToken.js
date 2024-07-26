@@ -1,17 +1,26 @@
 import fs from 'fs';
 import dotenv from 'dotenv';
 import os from 'os';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+// const filePath = join(__dirname, '.env');
 
-dotenv.config();
+// Compute the path for the parent directory
+const parentDir = dirname(__dirname);
+const filePath = join(parentDir, '.env');
+//dotenv.config();
 
 async function getConnectToken() {
   const token = process.env.TOKEN;
+  console.log(filePath);
   return token;
 }
 
 async function setConnectToken(value) {
-  const filePath = './.env';
+
   try {
     if(fileExists(filePath)==false){
       fs.writeFileSync(filePath,`TOKEN=${value}`);
@@ -34,7 +43,7 @@ async function setConnectToken(value) {
 function fileExists(filePath){
 
   try{
-    fs.accessSync('./.env',fs.constants.F_OK)
+    fs.accessSync(filePath,fs.constants.F_OK)
     return true;
   }catch(err){
     return false;
