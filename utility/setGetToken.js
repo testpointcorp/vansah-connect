@@ -6,16 +6,15 @@ import { dirname, join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-// const filePath = join(__dirname, '.env');
 
 // Compute the path for the parent directory
 const parentDir = dirname(__dirname);
 const filePath = join(parentDir, '.env');
-//dotenv.config();
+
+dotenv.config({ path: filePath });
 
 async function getConnectToken() {
   const token = process.env.TOKEN;
-  console.log(filePath);
   return token;
 }
 
