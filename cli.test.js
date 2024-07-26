@@ -5,7 +5,7 @@ import { result , testCaseResult} from "./utility/validation.js";
 describe("API Tests", function() {
     
   it("API should be able to upload the testngResults.xml to Vansah", function(done){
-    sendResult("./test_files/testng-report.xml", process.env.VANSAH_TOKEN)
+    sendResult("./testng-report.xml", process.env.VANSAH_TOKEN)
       .then(function(result) {
         expect(result.data.message).to.equal("Results import is completed.");
         done();  
@@ -38,7 +38,7 @@ describe("API Tests", function() {
 });
 describe("Validate Validation func()",function(){
   it("Validate result(), uploading TestNG results file to Vansah", function(done){
-  result("./test_files/testng-report.xml")
+  result("./testng-report.xml")
       .then(function() {
         done();  
       })
