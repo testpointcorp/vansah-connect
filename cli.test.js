@@ -1,11 +1,14 @@
 import { expect } from "chai";
 import { sendResult,sendTestCaseResult } from "./api/sendresults.js"; 
 import { result , testCaseResult} from "./utility/validation.js";
+import {getEnvVariable} from  './utility/env.js';
+
+const token = await getEnvVariable("TOKEN");
 
 describe("API Tests", function() {
     
   it("API should be able to upload the testngResults.xml to Vansah", function(done){
-    sendResult("./testng-report.xml", process.env.VANSAH_TOKEN)
+    sendResult("./testng-report.xml", token)
       .then(function(result) {
         expect(result.data.message).to.equal("Results import is completed.");
         done();  
@@ -15,7 +18,7 @@ describe("API Tests", function() {
       });
   });
   it("API should be able to Execute a Test Case against an Issue to Vansah", function(done){
-    sendTestCaseResult("PVT-C500","PASSED","PVT-4",process.env.VANSAH_TOKEN)
+    sendTestCaseResult("PVT-C500","PASSED","PVT-4",token)
       .then(function(result) {
         expect(result.data.message).to.equal("A new Test Run created.");
         done();  
@@ -25,7 +28,7 @@ describe("API Tests", function() {
       });
   });
   it("API should be able to Execute a Test Case against a TestFolder to Vansah", function(done){
-    sendTestCaseResult("PVT-C500","PASSED","cb7c7c7a-5efc-11ee-bf34-eef1749e5133",process.env.VANSAH_TOKEN)
+    sendTestCaseResult("PVT-C500","PASSED","cb7c7c7a-5efc-11ee-bf34-eef1749e5133",token)
       .then(function(result) {
         expect(result.data.message).to.equal("A new Test Run created.");
         done();  

@@ -1,10 +1,11 @@
 import {sendResult,sendTestCaseResult} from '../api/sendresults.js';
 import {beforeResult, successTxt,onCLIError} from '../utility/displayOutput.js';
-import {getConnectToken } from '../utility/setGetToken.js';
+import {getEnvVariable} from  '../utility/env.js';
+
+const tokenValue = await getEnvVariable("TOKEN");
 
 export async function result(filePath){
     try {  
-      const tokenValue = await getConnectToken();
       if (typeof tokenValue === 'undefined') {
         onCLIError("Unable to retrieve Vansah Connect Token \nPlease run vansah-connect -c 'Your Token Value'");
         process.exit(1);
@@ -35,7 +36,6 @@ export async function result(filePath){
   }
 export async function testCaseResult(testCaseKey,testCaseResult,assetKey){
     try {  
-      const tokenValue = await getConnectToken();
       if (typeof tokenValue === 'undefined') {
         console.log("Unable to retrieve Vansah Connect Token \nPlease run vansah-connect -c 'Your Token Value'");
       }

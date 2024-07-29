@@ -2,11 +2,10 @@ import {PROD_URL,API_VERSION} from '../const.js';
 import axios from 'axios';
 import FormData from 'form-data';
 import fs from 'fs';
+import {getEnvVariable} from  '../utility/env.js';
 
-
-const apiUrl = PROD_URL;
+const apiUrl = await getEnvVariable("PROD_URL") || PROD_URL;
 const nodeApiVersion = API_VERSION;
-
 async function sendResult(filePath,TOKEN){
     const bodyFormData = new FormData();
     bodyFormData.append('testFormat', "TESTNG");
