@@ -36,6 +36,6 @@ else if(options.testCaseKey && Object.keys(options).length <12){
   
 }
 else {
-  console.info("Usage:\nvansah-connect -c <connectToken> \nvansah-connect -f <filePath> \nvansah-connect -t <TestCaseKey> -s <ResultName PASSED/FAILED> -a <AssetKey/TestFolder Path>");
+  console.info("Run vansah-connect --help");
   process.exit(1);
 }
