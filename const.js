@@ -1,4 +1,4 @@
-const PROD_URL = "https://prod.vansahnode.app";
+const PROD_URL = "https://prod.vansah.com";
 const API_VERSION = "v1";
 
 export {
