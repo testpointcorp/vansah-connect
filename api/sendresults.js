@@ -2,11 +2,10 @@ import {PROD_URL,API_VERSION} from '../const.js';
 import axios from 'axios';
 import FormData from 'form-data';
 import fs from 'fs';
+import {getEnvVariable} from  '../utility/env.js';
 
-
-const apiUrl = PROD_URL;
+const apiUrl = await getEnvVariable("PROD_URL") || PROD_URL;
 const nodeApiVersion = API_VERSION;
-
 async function sendResult(filePath,TOKEN){
     const bodyFormData = new FormData();
     bodyFormData.append('testFormat', "TESTNG");
@@ -30,7 +29,7 @@ async function sendResult(filePath,TOKEN){
       } 
     }
 }
-async function sendTestCaseResult(testCaseKey,testCaseResultName,assetKey,TOKEN){ 
+async function sendTestCaseResult(testCaseKey,testCaseResultName,assetKey,token){ 
   const assetObject = {};
   if(countHyphens(assetKey)>1){
     assetObject.type = "folder";
@@ -57,7 +56,7 @@ async function sendTestCaseResult(testCaseKey,testCaseResultName,assetKey,TOKEN)
       url: `${apiUrl}/api/${nodeApiVersion}/run`,
       data: JSON.stringify(body),
       headers: { 
-        "Authorization": TOKEN,
+        "Authorization": token,
         "Content-Type": "application/json" 
       },
     });
