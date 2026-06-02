@@ -54,7 +54,7 @@ $ npm i -g @vansah/vansah-connect
         ```bash
             $ vansah-connect -c %YOUR-PIPELINE-VARIABLE%
         ```
-- Configure your Vansah Jira Pinned location URL.( leave it blank to use default URL : `https://prod.vansah.com`)
+- Configure your Vansah Jira Pinned location URL.( leave it blank to use default URL : `https://prod.vansah.com`) Refer to: https://help.vansah.com/en/articles/10407923-vansah-api-connect-url
 
     > Note : If your Jira instance is set to a specific location, the URL will be different. Update the URL by verifying it in the Vansah API Tokens section.
 
