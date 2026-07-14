@@ -1,8 +1,8 @@
-import {sendResult,sendTestCaseResult} from '../api/sendresults.js';
+import {sendResult,sendTestCaseResult,sendCucumberResult} from '../api/sendresults.js';
 import {beforeResult, successTxt,onCLIError} from '../utility/displayOutput.js';
 import {getEnvVariable} from  '../utility/env.js';
 
-const tokenValue = await getEnvVariable("TOKEN");
+const tokenValue = await getEnvVariable("VANSAH_TOKEN") || await getEnvVariable("TOKEN");
 
 export async function result(filePath){
     try {  
@@ -29,6 +29,36 @@ export async function result(filePath){
           
         }); 
       }  
+    } catch (error) {
+      onCLIError(error);
+      process.exit(1);
+    }
+  }
+export async function cucumberResult(filePath,assetKey){
+    try {
+      if (typeof tokenValue === 'undefined') {
+        onCLIError("Unable to retrieve Vansah Connect Token \nPlease run vansah-connect -c 'Your Token Value'");
+        process.exit(1);
+      }
+      else if (!assetKey) {
+        onCLIError("Usage: vansah-connect -f <cucumber.json> --format cucumber -a <IssueKey/TestFolder Path>");
+        process.exit(1);
+      }
+      else{
+        beforeResult("Uploading Cucumber Results to Vansah",false);
+        const result = await sendCucumberResult(filePath,assetKey,tokenValue);
+        const data = result && result.data;
+        if(result && result.status == 200 && data && data.success){
+          beforeResult(true);
+          const runs = (data.testRuns || []).map(function(r){ return `${r.testCaseKey}=${r.status}`; }).join(", ");
+          successTxt(`Imported ${data.imported}, Failed ${data.failed}, Skipped ${data.skipped}${runs ? " ("+runs+")" : ""}`);
+          process.exit(0);
+        }
+        else{
+          onCLIError(`${(data && (data.message || JSON.stringify(data))) || result}`);
+          process.exit(1);
+        }
+      }
     } catch (error) {
       onCLIError(error);
       process.exit(1);
