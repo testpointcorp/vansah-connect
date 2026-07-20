@@ -8,3 +8,5 @@ cli.test.js
 testng-report.xml
 #Ignore
 .env
+#Ignore Test files
+testfiles/

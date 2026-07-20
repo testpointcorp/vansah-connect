@@ -1,0 +1,298 @@
+[
+  {
+    "description": "  Exported test cases from Vansah",
+    "elements": [
+      {
+        "description": "",
+        "id": "issue:-demo-6;verify-that-the-case-manager-can-assign-the-'foreign'-status-to-a-case",
+        "keyword": "Scenario",
+        "line": 12,
+        "name": "Verify that the Case Manager can assign the 'foreign' status to a case",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 428458
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 14,
+            "name": "the user is logged in as a Case Manager",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:88"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 82042
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "the user is viewing an existing case",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:93"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 37957
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 16,
+            "name": "the user selects 'foreign' as the case type",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:98"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 67917
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 17,
+            "name": "the system updates the case status to 'foreign'",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:103"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 80708
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 18,
+            "name": "the case is marked as 'foreign' in the system",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:108"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 31874
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@DEMO-C73",
+            "line": 9
+          },
+          {
+            "name": "@version:v1",
+            "line": 10
+          },
+          {
+            "name": "@type:functional",
+            "line": 11
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "issue:-demo-6;confirm-that-workflows-and-processes-adapt-when-a-case-is-categorized-as-'foreign'",
+        "keyword": "Scenario",
+        "line": 23,
+        "name": "Confirm that workflows and processes adapt when a case is categorized as 'foreign'",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 15500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 25,
+            "name": "a case is categorized as 'foreign'",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:114"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 32707
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 26,
+            "name": "the system processes the case",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:122"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 87291
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 27,
+            "name": "the system applies workflows and processes specific to foreign cases",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:126"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 1265708,
+              "error_message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n\u001b[32m+ actual\u001b[39m \u001b[31m- expected\u001b[39m\n\n  [\n\u001b[32m+\u001b[39m   'standard-review'\n\u001b[31m-\u001b[39m   'foreign-review',\n\u001b[31m-\u001b[39m   'foreign-compliance'\n  ]\n    + expected - actual\n\n     [\n    -  \"standard-review\"\n    +  \"foreign-review\"\n    +  \"foreign-compliance\"\n     ]\n\n    at /Users/oneshubham/Documents/Client Vansah/demo-cucumber/features/step_definitions/tests.steps.js:128:12\n    at attachBugOnFailure (/Users/oneshubham/Documents/Client Vansah/demo-cucumber/features/step_definitions/tests.steps.js:79:5)\n    at World.<anonymous> (/Users/oneshubham/Documents/Client Vansah/demo-cucumber/features/step_definitions/tests.steps.js:127:9)"
+            },
+            "embeddings": [
+              {
+                "data": "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tcnJyclJ6b5gDcbet27duiWrmnaop6enp9JrAnAPe7AABTgU9urVq1fw1B07duzQrfT19fVVuiNYm3hgQlY19Rv29vb21uy/7I8rVqxYUVr87rvvvmvN171fXmcTEhISfIsXLVq0SOle0LYQsAAF1AedPHny5A+Lu3Tp0kUMNvHOTkpKSuK8q7ZD7untmsft7OzsVHXW698UVVdXV2eIKy8vL7feq94/Y/va2tpapbtAW8QtQkAxxtnV1dXVFY/985///Gf+1t69e/e+NvKll156qUnS+e9ozcynzWazWVq1/zaZTCal1wTgHgIW0DqcNpvN5tuLU1NTU3841qNHjx5Va9PS0tKUbguWopX6KIN5eUNDQ4PSawJwDwELaHVMebW1tbVX+r/wwgsvFE98880331S6IzQTqVar1S0vo/mji4uLi6ymTBPq6+vrlXxbAPwYAQto1UrfWLp06dIS1YIFCyxzPndPOXGh7RAjjFpeR27AMvSR+UwigJZjkzseEDpDu3bt2tk2BgcHB7eokBiSs8FkMpnMu/V6vb75kByxa0ru81+/Rsnp+fPnz7cNDw4ODvawnTBhwgRZle/GhXXWXI213d3tJOsG2ktyApZ2qaurq6tquZymDOdKSkpKVH0lrRFAixGw8IBwSxs9evToDkvWrFmzpkWFvmv2/Z+afW1GRC7DxuLi4uJG28uXL18WI3trL2VlZWVVv7J9+/btYo6h3DUWrXz11VdfdakcNmzYMJ2sgyUzdTqdTlUsqcXvZW7clkZ01VVOMfUunU6nU81taR2b5MDAwEBVpZyuxDN9xpXl5eXl2pleXl5ecuoC+K24RQjcN/UwOzs7O/EB6bR6yJAhQ7yykpKSkgIvf/31119323vlypUrni9PmjRpktzXNT5RVVVVVVT22muvvSZtLcU2NjY2sqpZIla2uq5EJG0x+6Ru3bp1k7vShqnnzp07J7cmgN+GgAVIptvevn379h2Pp6SkpAS8sH79+vVqqVMFK9empaWlNX558eLFiy2vdvf8JEnMfk1NTU2yqkkjNWDJiqR27l27du0qa0eXoO939uzZs7KqAWgJAhZgQe7nx48fP95v3d/+9re/SSt62mw2m8tzV61atarlxdSnHB0dHWW1JvfwTFlM3+r1er2sapp1Dg4ODi2vo17n4ODgcPdGoSR3Qg4cOHBAVjUA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",
+                "mime_type": "image/png"
+              }
+            ]
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "the case follows the foreign case handling procedures",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:135"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@DEMO-C74",
+            "line": 20
+          },
+          {
+            "name": "@version:v1",
+            "line": 21
+          },
+          {
+            "name": "@type:functional",
+            "line": 22
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "issue:-demo-6;check-that-only-users-with-case-manager-role-can-categorize-cases-as-'foreign'",
+        "keyword": "Scenario",
+        "line": 33,
+        "name": "Check that only users with Case Manager role can categorize cases as 'foreign'",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 63416
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 35,
+            "name": "the user is logged in without the Case Manager role",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:141"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 34458
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 36,
+            "name": "the user is viewing an existing case",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:93"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17249
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 37,
+            "name": "the user attempts to assign the 'foreign' status to the case",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:146"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 33375
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 38,
+            "name": "the system does not allow the user to assign the 'foreign' status",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:150"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 35040
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 39,
+            "name": "an appropriate error or access denied message is displayed",
+            "match": {
+              "location": "features/step_definitions/tests.steps.js:155"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 60707
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@DEMO-C75",
+            "line": 30
+          },
+          {
+            "name": "@version:v1",
+            "line": 31
+          },
+          {
+            "name": "@type:functional",
+            "line": 32
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "issue:-demo-6",
+    "line": 6,
+    "keyword": "Feature",
+    "name": "Issue: DEMO-6",
+    "tags": [],
+    "uri": "features/tests.feature"
+  }
+]
