@@ -2,7 +2,7 @@
    <a href="https://vansah.com"><img src="https://vansah.com/app/logo/vansahjira-logo.svg" /></a><br>
 </div>
 
-<p align="center">A Single Solution for all your CI/CD tools to send automated Test results to Vansah Test Management for Jira</p>
+<p align="center">vansah-connect is a CLI tool for CI/CD pipelines that sends automated test results (TestNG XML, Cucumber JSON, or single test-case results) to Vansah Test Management for Jira with a single command.</p>
 
 <p align="center">
     <a href="https://vansah.com/"><b>Website</b></a> •
