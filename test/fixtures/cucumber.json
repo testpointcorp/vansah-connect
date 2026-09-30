@@ -85,7 +85,7 @@
         ],
         "tags": [
           {
-            "name": "@DEMO-C73",
+            "name": "@NEW2-C2",
             "line": 9
           },
           {
@@ -176,7 +176,7 @@
         ],
         "tags": [
           {
-            "name": "@DEMO-C74",
+            "name": "@NEW2-C3",
             "line": 20
           },
           {
@@ -273,7 +273,7 @@
         ],
         "tags": [
           {
-            "name": "@DEMO-C75",
+            "name": "@NEW2-C4",
             "line": 30
           },
           {
@@ -291,7 +291,7 @@
     "id": "issue:-demo-6",
     "line": 6,
     "keyword": "Feature",
-    "name": "Issue: DEMO-6",
+    "name": "Issue: NEW2-1",
     "tags": [],
     "uri": "features/tests.feature"
   }

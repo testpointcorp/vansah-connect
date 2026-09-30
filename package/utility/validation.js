@@ -1,13 +1,11 @@
 import {sendResult,sendTestCaseResult,sendCucumberResult} from '../api/sendresults.js';
 import {beforeResult, successTxt,onCLIError} from '../utility/displayOutput.js';
 import {getEnvVariable} from  '../utility/env.js';
-import {PROD_URL} from '../const.js';
 
 const tokenValue = await getEnvVariable("VANSAH_TOKEN") || await getEnvVariable("TOKEN");
 
 // Returns an error string if the resolved Test Plan target is incomplete,
-// otherwise null. `needsContext` is true for flows where an ATP also needs an
-// issue/folder context (cucumber) or an asset identifier (single result).
+// otherwise null. ATP requires an issue or folder context for both upload flows.
 function planTargetError(planTarget, contextValue, contextHint){
   if(!planTarget){ return null; }
   const label = planTarget.type === "atp" ? "Advanced Test Plan" : "Standard Test Plan";
@@ -38,7 +36,8 @@ const SINGLE_RESULT_EXAMPLES =
   "Examples:\n" +
   "  vansah-connect -t DEMO-C50 -s passed -a DEMO-9\n" +
   "  vansah-connect -t DEMO-C50 -s passed -a \"regression/login/\"\n" +
-  "  vansah-connect -t DEMO-C50 -s passed --mode stp --stp DEMO-P2";
+  "  vansah-connect -t DEMO-C50 -s passed --stp DEMO-P2 --itr 2\n" +
+  "  vansah-connect -t DEMO-C50 -s passed --atp DEMO-P1 -a DEMO-9 --itr 2";
 
 // Print a friendly, multi-line validation error (matching the --format style)
 // and exit. Used for pre-flight checks before any API call - no spinner.
@@ -54,7 +53,7 @@ export async function result(filePath){
       }
       else{
           beforeResult("Uploading Results to Vansah",false);
-          sendResult(filePath,tokenValue).then(function(result){
+          await sendResult(filePath,tokenValue).then(function(result){
           if(result.status > 200 && result.status < 500){
             onCLIError(`${result.data.message}`);
             process.exit(1);
@@ -93,12 +92,16 @@ export async function cucumberResult(filePath,assetKey,planTarget){
       const data = result && result.data;
       if(result && result.status == 200 && data && data.success){
         beforeResult(true);
-        const runs = (data.testRuns || []).map(function(r){ return `${r.testCaseKey}=${r.status}`; }).join(", ");
-        successTxt(`Imported ${data.imported}, Failed ${data.failed}, Skipped ${data.skipped}${runs ? " ("+runs+")" : ""}`);
+        successTxt(`Imported ${data.imported}, Failed ${data.failed}, Skipped ${data.skipped}`);
         process.exit(0);
       }
       else{
-        onCLIError(`${(data && (data.message || JSON.stringify(data))) || result}`);
+        const summary = (data && (data.message || JSON.stringify(data))) || result;
+        const errors = data && data.data && data.data.errors;
+        const details = Array.isArray(errors)
+          ? errors.filter(error => error && typeof error.msg === 'string').map(error => error.msg)
+          : [];
+        onCLIError([summary, ...details].join('\n'));
         process.exit(1);
       }
     } catch (error) {
@@ -111,11 +114,11 @@ export async function testCaseResult(testCaseKey,testCaseResult,assetKey,planTar
       if (typeof tokenValue === 'undefined') {
         failWith("no Vansah Connect token found.", TOKEN_HELP);
       }
-      const planError = planTargetError(planTarget);
+      const planError = planTargetError(planTarget, assetKey, "-a <IssueKey or TestFolder path> as context");
       if (planError) {
         failWith(planError, SINGLE_RESULT_EXAMPLES);
       }
-      const target = planTarget ? `${planTarget.type.toUpperCase()} ${planTarget.key}` : assetKey;
+      const target = planTarget ? `${planTarget.type.toUpperCase()} ${planTarget.key} iteration ${planTarget.iteration ?? 1}${planTarget.type === "atp" ? ` (${assetKey})` : ""}` : assetKey;
       beforeResult("Uploading Results to Vansah",false);
       await sendTestCaseResult(testCaseKey,testCaseResult,assetKey,tokenValue,planTarget).then(function(result){
         if(result.status > 200 && result.status < 500){
@@ -137,26 +140,3 @@ export async function testCaseResult(testCaseKey,testCaseResult,assetKey,planTar
       process.exit(1);
     }
   }
-
-// Prints the effective configuration (real env > project .env > saved user
-// config), with the Connect token masked.
-export async function showConfig(){
-  const token = await getEnvVariable("VANSAH_TOKEN") || await getEnvVariable("TOKEN");
-  const mask = (v) => {
-    if(!v){ return "(not set)"; }
-    if(`${v}`.length <= 8){ return "••••"; }
-    return `${`${v}`.slice(0,4)}…${`${v}`.slice(-4)}`;
-  };
-  const line = (label, value) => `  ${`${label}:`.padEnd(24)} ${value === undefined || value === '' || value === null ? "(not set)" : value}`;
-  console.log("Vansah Connect configuration:");
-  console.log(line("Connect token", mask(token)));
-  console.log(line("API URL", (await getEnvVariable("VANSAH_URL")) || `${PROD_URL} (default)`));
-  console.log(line("Space / Project key", await getEnvVariable("VANSAH_PROJECT_KEY")));
-  const currentMode = (await getEnvVariable("VANSAH_MODE")) || "normal";
-  console.log(line("Mode", `${currentMode}  [applies to plan runs only; supported: stp (Standard Test Plan), atp (Advanced Test Plan)]`));
-  console.log(line("Standard Test Plan key", await getEnvVariable("VANSAH_STP_KEY")));
-  console.log(line("Advanced Test Plan key", await getEnvVariable("VANSAH_ATP_KEY")));
-  console.log(line("Environment", await getEnvVariable("VANSAH_ENVIRONMENT_NAME")));
-  console.log(line("Sprint", await getEnvVariable("VANSAH_SPRINT_NAME")));
-  console.log(line("Release", await getEnvVariable("VANSAH_RELEASE_NAME")));
-}

@@ -1,338 +1,371 @@
 <div align="center">
-   <a href="https://vansah.com"><img src="https://vansah.com/app/logo/vansahjira-logo.svg" /></a><br>
+  <a href="https://vansah.com"><img src="https://vansah.com/app/logo/vansahjira-logo.svg" alt="Vansah Test Management for Jira" /></a><br>
 </div>
 
-<p align="center">vansah-connect is a CLI tool for CI/CD pipelines that sends automated test results (TestNG XML, Cucumber JSON, or single test-case results) to Vansah Test Management for Jira with a single command.</p>
+<p align="center">Vansah Connect brings automated test results into Vansah Test Management for Jira. Upload TestNG XML or Cucumber JSON reports, or log a single test-case result, from your terminal or CI/CD pipeline.</p>
 
 <p align="center">
-    <a href="https://vansah.com/"><b>Website</b></a> •
-    <a href="https://vansah.com/connect-integrations/"><b>More Connect Integrations</b></a>
+  <a href="https://vansah.com/"><b>Website</b></a> •
+  <a href="https://vansah.com/connect-integrations/"><b>More Connect Integrations</b></a>
 </p>
 
-## Table of Contents
+# Vansah Connect
 
-  - [Features](#Features)
-  - [Prerequisite](#Prerequisite)
-  - [Installing](#Installing)
-  - [Configuration](#Configuration)
-  - [Uploading a TestNG Report](#Uploading-a-TestNG-Report)
-  - [Use of Custom Attributes](#Use-of-Custom-Attributes)
-  - [Uploading a Cucumber Report](#Uploading-a-Cucumber-Report)
-  - [Adding results to a specific Test Case](#Adding-results-to-a-specific-Test-Case)
-  - [Targeting a Test Plan (STP / ATP)](#Targeting-a-Test-Plan-STP--ATP)
-  - [Command Reference](#Command-Reference)
-  - [Using in CI/CD](#Using-in-CICD)
+`@vansah/vansah-connect` is a command-line tool that connects your test automation to Vansah. Run your tests with your existing framework, then use this CLI to upload the results and record test runs in Jira. The CLI does not execute your test suite.
 
-## Features
+Use it to:
 
-- Upload your **TestNG** 🎉 XML and **Cucumber** 🥒 JSON reports to [`Vansah Test Management for Jira`](https://marketplace.atlassian.com/apps/1224250/vansah-test-management-for-jira?tab=overview&hosting=cloud) with a single command.
-- Execute your Vansah Test Case in just [`one command`](#Adding-results-to-a-specific-Test-Case).
-- Easy to use as it is command line friendly.
-- Easy to integrate with CI/CD tools such as Github Actions, Jenkins, Gitlab and so on.
-- Reads configuration from environment variables, a project `.env`, or a saved user config - so pipeline secrets stay out of your repo.
+- Upload TestNG XML and Cucumber JSON reports after automated tests finish.
+- Log a result for an individual Vansah test case.
+- Record results against Jira issues, test folders, or supported test plans.
+- Select a test-plan iteration for Cucumber or single results and associate supported run properties.
+- Automate reporting from GitHub Actions, Jenkins, GitLab CI, or another pipeline.
 
-## Prerequisite
+## Contents
 
-- Make sure that [`Vansah`](https://marketplace.atlassian.com/apps/1224250/vansah-test-management-for-jira?tab=overview&hosting=cloud) is installed in your Jira workspace.
-- You need to generate a Vansah [`Connect token`](https://help.vansah.com/en/articles/14003255-create-vansah-api-token) to authenticate with the Vansah APIs.
-- Your Vansah [`API Connect URL`](https://help.vansah.com/en/articles/10407923-vansah-api-connect-url) (e.g. `https://prod.vansah.com`).
-- Your **Space Key** (your Jira project key, e.g. `DEMO`) - required by the Vansah API v2.
-- [Node.js](https://nodejs.org/en/download) version 18 or newer should be installed on your machine.
+- [Prerequisites](#prerequisites)
+- [Setup](#setup)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [CI/CD](#cicd)
+- [Local development](#local-development)
+- [Local testing](#local-testing)
+- [Packaging and publishing](#packaging-and-publishing)
+- [Troubleshooting](#troubleshooting)
 
-## Installing
+## Prerequisites
 
-Using npm (install globally) as this is a `command line` tool:
+- Node.js 18 or newer and npm. Use Node.js 22 or newer for local development and repository tests.
+- Vansah installed in your Jira workspace.
+- A Vansah Connect token and your workspace's API Connect URL.
+- Your Jira project/space key.
+- Existing test cases and the issue, folder, or test plan where results will be recorded.
+- For test-plan uploads, the selected iteration must already exist in the plan.
 
-```bash
-$ npm i -g @vansah/vansah-connect
-```
+## Setup
 
-Verify the install:
+Install the published CLI:
 
 ```bash
-$ vansah-connect --help
+npm install --global @vansah/vansah-connect
+vansah-connect --help
 ```
+
+Configure your token, API URL, and Jira project key. Replace the example values with your own. If your token is already supplied through the `VANSAH_TOKEN` environment variable, saving it is optional.
+
+```bash
+vansah-connect -c "$VANSAH_TOKEN"
+vansah-connect -v "https://prod.vansah.com"
+vansah-connect -p DEMO
+```
+
+Use the API URL assigned to your Vansah workspace; the default is `https://prod.vansah.com`. Keep tokens out of version control. Examples below use placeholder keys such as `DEMO-C1` and `DEMO-9` that must exist in your project.
+
+This README describes the code in this checkout. If a flag is unavailable in your installed release, follow [local development](#local-development) to run this version.
 
 ## Configuration
 
-`vansah-connect` reads its settings from three sources, in this order of priority:
+Settings load in this order, highest priority first:
 
-1. **Environment variables** (best for CI - inject secrets as masked variables)
-2. **A `.env` file** in the directory you run the command from (your project root)
-3. **The saved user config** at `~/.vansah-connect/.env`
+1. Shell or CI environment variables.
+2. Saved user settings in `~/.vansah-connect/.env`.
+3. A `.env` file in the directory where you run the command.
+4. Built-in defaults.
 
-Save your settings once with the commands below. They are written to `~/.vansah-connect/.env` and reused across every project.
-
-- Configure your Vansah `Connect` token. Use either of the following commands:
-    - Option 1: Replace "Your Vansah `Connect` Token" with your actual token.
-
-        ```bash
-        $ vansah-connect -c "Your Vansah Connect Token"
-        ```
-    - Option 2: If you have the token stored as a pipeline variable, you can use:
-
-        ```bash
-        $ vansah-connect -c %YOUR-PIPELINE-VARIABLE%
-        ```
-
-- Configure your Vansah Jira pinned location URL (leave it blank to use the default URL: `https://prod.vansah.com`).
-
-    > **Note:** If your Jira instance is set to a specific location, the URL will be different. Update the URL by verifying it in the **Apps → Vansah → Settings → Vansah API Tokens** section.
-
-    ```bash
-    $ vansah-connect -v "https://prod<Your Region code>.vansah.com"
-    ```
-
-- Configure your **Space Key** (Jira project key) - required for API v2.
-
-    ```bash
-    $ vansah-connect -p "DEMO"
-    ```
-
-- Optionally, save the **run properties** so they apply to every run:
-
-    ```bash
-    $ vansah-connect --environment "UAT"      # tested environment (e.g. SYS, UAT)
-    $ vansah-connect --sprint "Sprint 1"      # sprint to associate with the run
-    $ vansah-connect --release "v1.2"         # release to associate with the run
-    ```
-
-> **Tip:** Run `vansah-connect --show-config` at any time to print the effective configuration (the Connect token is masked).
-
-### Environment variables
-
-Every setting can also be supplied as an environment variable (ideal for pipelines):
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `VANSAH_TOKEN` | Yes | Your Vansah Connect token |
-| `VANSAH_PROJECT_KEY` | Yes* | Your Space Key / Jira project key (e.g. `DEMO`) |
-| `VANSAH_URL` | No | Vansah API URL (default `https://prod.vansah.com`) |
-| `VANSAH_ENVIRONMENT_NAME` | No | Tested environment (e.g. `SYS`, `UAT`) |
-| `VANSAH_SPRINT_NAME` | No | Sprint name to associate with the run |
-| `VANSAH_RELEASE_NAME` | No | Release name to associate with the run |
-| `VANSAH_MODE` | No | Result target: `normal` (issue/folder, default), `stp` or `atp` - see [Targeting a Test Plan](#Targeting-a-Test-Plan-STP--ATP) |
-| `VANSAH_STP_KEY` | No | Standard Test Plan key (e.g. `DEMO-P2`) used when mode is `stp` |
-| `VANSAH_ATP_KEY` | No | Advanced Test Plan key (e.g. `DEMO-P1`) used when mode is `atp` |
-
-\* `VANSAH_PROJECT_KEY` is required for Cucumber uploads and single-result logging. TestNG uploads derive the project from the Case Key prefix.
-
-## Uploading a TestNG Report
-
-Now, it's time to effortlessly upload your test results to `Vansah Test Management for Jira` with a single command.
-
-Replace `./YOUR-TESTNG_FILEPATH.xml` with the actual file path to your TestNG file. The `--format` flag is **required** with `-f`:
+Standalone configuration commands write to the saved user file. Saved values override project `.env` values, including empty saved values. Settings are shared across projects for the same user. To remove a saved setting, delete its entry from that file.
 
 ```bash
-$ vansah-connect -f ./YOUR-TESTNG_FILEPATH.xml --format testng
+vansah-connect --environment UAT
+vansah-connect --sprint "Sprint 1"
+vansah-connect --release "v1.2"
+vansah-connect --mode stp --stp DEMO-P2
+vansah-connect --itr 1
 ```
 
-> **Note:** Set up your `TestNG` file to include [`custom attributes`](#Use-of-Custom-Attributes) for each of your test functions. This way, after running the automation suite, all test methods will have sufficient information to log the results into `Vansah Test Management for Jira`.
+Run these save commands separately from uploads. Inline `--mode`, `--stp`, `--atp`, and `--itr` select a target for that invocation without saving it. Other configuration flags, such as `--environment`, do not override an upload inline; save them first or supply environment variables.
 
-## Use of Custom Attributes
+| Environment variable | Purpose |
+| --- | --- |
+| `VANSAH_TOKEN` | Vansah Connect token; required for API requests |
+| `VANSAH_URL` | API base URL; defaults to `https://prod.vansah.com` |
+| `VANSAH_PROJECT_KEY` | Jira project/space key; required when sending results |
+| `VANSAH_ENVIRONMENT_NAME` | Environment for Cucumber and single-result requests |
+| `VANSAH_SPRINT_NAME` | Sprint for Cucumber uploads |
+| `VANSAH_RELEASE_NAME` | Release for Cucumber uploads |
+| `VANSAH_MODE` | `normal`, `stp`, or `atp`; defaults to `normal` |
+| `VANSAH_STP_KEY` | Saved Standard Test Plan key |
+| `VANSAH_ATP_KEY` | Saved Advanced Test Plan key |
+| `VANSAH_ITERATION` | STP/ATP iteration for Cucumber and single results; defaults to `1` |
 
-In Vansah, the determination of whether a test should pass or fail relies on the utilization of custom attribute annotations.
+Legacy `TOKEN` and `PROD_URL` variables are fallback names when `VANSAH_TOKEN` and `VANSAH_URL` respectively have no nonempty value. Prefer the `VANSAH_` names. TestNG targeting and properties come from the XML report.
+
+## Usage
+
+### Upload Cucumber results to an issue or folder
+
+You can export tagged feature files from Vansah using [Cucumber Feature Export](https://help.vansah.com/en/articles/13337729-cucumber-feature-export), or tag your existing scenarios manually.
+
+Tag each scenario with its Vansah test-case key and produce a Cucumber JSON report:
+
+```gherkin
+Feature: Login
+
+  @DEMO-C1
+  Scenario: Successful login
+    Given a registered user
+    When the user signs in with valid credentials
+    Then the dashboard is displayed
+```
+
+For a project using Cucumber.js, generate the report with:
+
+```bash
+npx cucumber-js --format json:cucumber.json
+```
+
+Upload it to a Jira issue or test folder:
+
+```bash
+vansah-connect -f ./cucumber.json --format cucumber -a DEMO-9
+vansah-connect -f ./cucumber.json --format cucumber -a "regression/login/"
+```
+
+`-a` is interpreted as a folder path if it contains `/`; otherwise it is a Jira issue key. A plan key such as `DEMO-P2` must use `--stp` or `--atp`, not `-a`.
+
+For report setup and examples for other test runners, see [Vansah Cucumber Integration](https://help.vansah.com/en/articles/13228016-vansah-cucumber-integration). That guide also covers separate shell and PowerShell import scripts; use the commands and `VANSAH_` settings in this README for this CLI.
+
+### Upload Cucumber results to a test plan
+
+| Target | Required options | Supported input |
+| --- | --- | --- |
+| Jira issue or folder | `-a <issue-or-folder>` | Cucumber, single result |
+| Standard Test Plan (STP) | `--stp <plan-key>` | Cucumber, single result |
+| Advanced Test Plan (ATP) | `--atp <plan-key>` and `-a <issue-or-folder>` context | Cucumber, single result |
+
+```bash
+# Standard Test Plan, iteration 2
+vansah-connect -f ./cucumber.json --format cucumber --stp DEMO-P2 --itr 2
+
+# Advanced Test Plan, with issue context
+vansah-connect -f ./cucumber.json --format cucumber --atp DEMO-P1 -a DEMO-9 --itr 2
+
+# Advanced Test Plan, with folder context
+vansah-connect -f ./cucumber.json --format cucumber --atp DEMO-P1 -a "regression/login/" --itr 2
+```
+
+Iteration must be a positive whole number. Text, fractions, zero, negatives, missing values, and repeated `--itr` flags are rejected. Resolution is inline `--itr`, then configured `VANSAH_ITERATION`, then `1`. The Cucumber API receives the multipart field `iterationNumber`. Single-result STP and ATP requests use the same iteration precedence. Custom iteration is not supported for normal issue/folder results or TestNG uploads.
+
+Create the iteration in the target Vansah Test Plan before uploading. The CLI does not create iterations: `--itr 2` sends results to iteration 2 that already exists in the selected plan. This also applies when the iteration comes from `VANSAH_ITERATION` or defaults to 1.
+
+Save a target for repeated use:
+
+```bash
+vansah-connect --mode stp --stp DEMO-P2
+vansah-connect --itr 2
+vansah-connect -f ./cucumber.json --format cucumber
+
+# Return to normal issue/folder targeting
+vansah-connect --mode normal
+```
+
+An explicit `-a` overrides a saved plan mode unless you also select a plan inline using `--mode`, `--stp`, or `--atp`. For example, use `--mode atp -a DEMO-9` to use the saved ATP key with issue context.
+
+### Upload a TestNG report
+
+```bash
+vansah-connect -f ./testng-results.xml --format testng
+```
+
+`--format` is required for every `-f` upload. TestNG destinations are specified in the report's custom attributes; CLI plan targeting does not apply.
+
+Include the exact, case-sensitive attribute names in your TestNG tests:
 
 ```java
-/**
- * Example
- * This is a test method for performing an addition operation.
- *
- * Custom Attributes:
- * - Case Key (Mandatory):          "DEMO-C1"
- * - Tested Issue (Mandatory):      "DEMO-1"
- * - Tested Sprint (Optional):      "DEMO Sprint 1"
- * - Tested Environment (Optional): "SYS"
- */
 @Test(attributes = {
-        @CustomAttribute(name = "Case Key", values = "DEMO-C1"),
-        @CustomAttribute(name = "Tested Issue", values = "DEMO-1"),
-        @CustomAttribute(name = "Tested Sprint", values = "DEMO Sprint 1"),
-        @CustomAttribute(name = "Tested Environment", values = "SYS")})
-public void Addition_Test() {
-
-    int a = 3, b = 2;
-    int sum = a + b;
-    System.out.println("Addition of Two numbers are : " + sum);
-
-    Assert.assertEquals(sum, 5);
-
+    @CustomAttribute(name = "Case Key", values = "DEMO-C1"),
+    @CustomAttribute(name = "Tested Issue", values = "DEMO-9"),
+    @CustomAttribute(name = "Tested Sprint", values = "Sprint 1"),
+    @CustomAttribute(name = "Tested Environment", values = "UAT")
+})
+public void additionTest() {
+    Assert.assertEquals(3 + 2, 5);
 }
 ```
 
-> **Note:** Modifying the name values is not possible as they are constant and case-sensitive.
+`Case Key` and `Tested Issue` identify the test and target. Sprint and environment are optional. Generate the XML report with your test runner before uploading it. See the [TestNG XML import guide](https://help.vansah.com/en/articles/9824969-testng-testcase-import-xml) for the report format and a sample XML file.
 
-## Uploading a Cucumber Report
-
-`vansah-connect` can upload a `cucumber.json` report produced by any Cucumber-based framework (JavaScript, Java, Python `behave`, Ruby, SpecFlow, and more).
-
-**1. Tag each scenario** with its Vansah Test Case key in the form `@{PROJECT}-C{NUMBER}`:
-
-```gherkin
-Feature: User Authentication
-
-  @DEMO-C54
-  Scenario: Valid login with correct credentials
-    Given I am on the login page
-    When I enter valid credentials
-    Then I should see the dashboard
-```
-
-> **Tip:** You can export ready-tagged `.feature` files straight from Vansah - **Export → Test Cases and Test Script → Cucumber (.feature)**. Scenarios without a Vansah tag are skipped during import.
-
-**2. Generate the JSON report** from your Cucumber run, for example:
+### Log a single test-case result
 
 ```bash
-$ npx cucumber-js --format json:cucumber.json
+vansah-connect -t DEMO-C1 -s passed -a DEMO-9
+vansah-connect -t DEMO-C1 -s failed -a "regression/login/"
+vansah-connect -t DEMO-C1 -s passed --stp DEMO-P2 --itr 2
+vansah-connect -t DEMO-C1 -s passed --atp DEMO-P1 -a DEMO-9 --itr 2
+vansah-connect -t DEMO-C1 -s passed --atp DEMO-P1 -a "regression/login/" --itr 2
 ```
 
-**3. Upload the report**, choosing where the runs should be recorded with `-a`:
+For plan results, `--itr` overrides `VANSAH_ITERATION`; when neither is set, iteration 1 is used. The iteration must already exist. ATP requires `-a` with the issue or folder containing the case. Use `vansah-connect help` or `--help` for examples.
 
-```bash
-# Against a Jira issue
-$ vansah-connect -f ./cucumber.json --format cucumber -a DEMO-9
+Supported statuses are case-insensitive:
 
-# Against a Test Folder (any value containing "/")
-$ vansah-connect -f ./cucumber.json --format cucumber -a "regression/login/"
-```
+| Status | API result ID |
+| --- | --- |
+| `n/a` (alias `na`) | 0 |
+| `failed` | 1 |
+| `passed` (alias `pass`) | 2 |
+| `untested` | 3 |
+| `n/a-in-progress` | 4 |
+| `failed-in-progress` | 5 |
+| `passed-in-progress` | 6 |
 
-Vansah parses the report, maps each tagged scenario to its Test Case, records the Gherkin steps and their pass/fail results, and attaches the runs to the issue or folder you provided. `VANSAH_PROJECT_KEY` must be set. Optional `VANSAH_SPRINT_NAME`, `VANSAH_RELEASE_NAME`, and `VANSAH_ENVIRONMENT_NAME` are applied if present.
+The in-progress variants follow [Vansah's result-status reference](https://help.vansah.com/en/articles/9822260-understanding-a-test-result-status/).
 
-> To record the runs against a **Standard** or **Advanced Test Plan** instead of an issue/folder, see [Targeting a Test Plan (STP / ATP)](#Targeting-a-Test-Plan-STP--ATP).
+## CI/CD
 
-A successful upload prints a summary:
-
-```bash
-✔ Imported 1, Failed 0, Skipped 0 (DEMO-C54=PASSED)
-```
-
-## Adding results to a specific Test Case
-
-If you want to upload a result directly to a particular Test Case, follow the command below.
-
-```bash
-/**
- * -t <TestCaseKey>
- * -s <passed | failed | n/a | untested>
- * -a <IssueKey or Test Folder path>
- **/
-$ vansah-connect -t "DEMO-C50" -s "passed" -a "DEMO-9"
-```
-
-- `-s` accepts `passed`, `failed`, `n/a`, or `untested` (case-insensitive).
-- `-a` is treated as a **Test Folder path** if it contains `/`, otherwise as a **Jira issue key**.
-- `VANSAH_PROJECT_KEY` must be set.
-
-Upon successful execution, you'll receive a reassuring message:
-
-```bash
-✔ Executed Test Case DEMO-C50 against DEMO-9 with Result = passed
-```
-
-## Targeting a Test Plan (STP / ATP)
-
-By default, results are recorded against a **Jira issue** or **Test Folder** (the `-a` asset). To record them against a Test Plan instead, switch the **mode**:
-
-| Mode | Target | Needs | Works with |
-|------|--------|-------|------------|
-| `normal` *(default)* | Jira issue or Test Folder | `-a` | Cucumber, single result |
-| `stp` | **Standard Test Plan** | plan key (`--stp`) | Cucumber, single result |
-| `atp` | **Advanced Test Plan** | plan key (`--atp`) + `-a` context | **Cucumber only** |
-
-> **Note:** Test Plan targeting applies to **Cucumber uploads** and **single-result logging** (`normal`/`stp` only - ATP is Cucumber-only). **TestNG is not supported** - TestNG reports target their destination through the `Case Key` / `Tested Issue` custom attributes in the XML, not through a mode.
-
-> **Iteration:** Test Plan runs currently land in the plan's **default iteration (1)**. Support for selecting a custom iteration is on the roadmap - the team will add it in an upcoming release.
-
-### Save your plan settings once
-
-The plan key and mode can be saved to `~/.vansah-connect/.env` like any other setting, then reused across runs:
-
-```bash
-# Standard Test Plan
-$ vansah-connect --mode stp --stp DEMO-P2
-
-# Advanced Test Plan
-$ vansah-connect --mode atp --atp DEMO-P1
-
-# Back to normal issue/folder targeting
-$ vansah-connect --mode normal
-```
-
-Check what is configured at any time:
-
-```bash
-$ vansah-connect --show-config
-```
-
-> **Heads-up:** A saved `mode` only applies to plan runs. Passing `-a` on a command is always treated as a **normal quick run** against that issue/folder - the saved `stp`/`atp` mode is ignored for that run, so it never hijacks a quick run. The saved mode only kicks in when you **don't** pass `-a` (or when you select a plan inline with `--mode` / `--stp` / `--atp`).
-
-### Standard Test Plan (STP)
-
-```bash
-# Cucumber report against a Standard Test Plan
-$ vansah-connect -f ./cucumber.json --format cucumber --mode stp --stp DEMO-P2
-
-# Single result against a Standard Test Plan
-$ vansah-connect -t DEMO-C50 -s passed --mode stp --stp DEMO-P2
-```
-
-### Advanced Test Plan (ATP)
-
-> **Cucumber uploads only.** Advanced Test Plans are **not supported for single results** (`-t`) - use a Cucumber report for ATP, or log single results against an issue/folder or a Standard Test Plan.
-
-An Advanced Test Plan additionally needs the **context** it is scoped to - supply the issue/folder with `-a`:
-
-```bash
-# Cucumber report against an Advanced Test Plan (issue as context)
-$ vansah-connect -f ./cucumber.json --format cucumber --mode atp --atp DEMO-P1 -a DEMO-9
-
-# ...or a Test Folder as context
-$ vansah-connect -f ./cucumber.json --format cucumber --mode atp --atp DEMO-P1 -a "regression/login/"
-```
-
-> Flags override saved config for a single run, so you can also keep the key in config and just pass `--mode stp` / `--mode atp` on the command.
-
-## Command Reference
-
-| Command | Description |
-|---------|-------------|
-| `vansah-connect -c <token>` | Save your Vansah Connect token |
-| `vansah-connect -v <url>` | Save your Vansah API URL |
-| `vansah-connect -p <projectKey>` | Save your Space Key (Jira project key) |
-| `vansah-connect --environment <name>` | Save the tested environment (run property) |
-| `vansah-connect --sprint <name>` | Save the sprint name (run property) |
-| `vansah-connect --release <name>` | Save the release name (run property) |
-| `vansah-connect --mode <normal\|stp\|atp>` | Save the result-target mode |
-| `vansah-connect --stp <planKey>` | Save your Standard Test Plan key |
-| `vansah-connect --atp <planKey>` | Save your Advanced Test Plan key |
-| `vansah-connect --show-config` | Show the saved / effective configuration (token masked) |
-| `vansah-connect -f <file> --format testng` | Upload a TestNG report |
-| `vansah-connect -f <file> --format cucumber -a <asset>` | Upload a Cucumber report against an issue / folder |
-| `vansah-connect -f <file> --format cucumber --mode stp --stp <planKey>` | Upload a Cucumber report against a Standard Test Plan |
-| `vansah-connect -f <file> --format cucumber --mode atp --atp <planKey> -a <asset>` | Upload a Cucumber report against an Advanced Test Plan |
-| `vansah-connect -t <caseKey> -s <result> -a <asset>` | Log a single Test Case result |
-| `vansah-connect -t <caseKey> -s <result> --mode stp --stp <planKey>` | Log a single result against a Standard Test Plan |
-| `vansah-connect --help` | Show all commands and examples |
-
-## Using in CI/CD
-
-In a pipeline, provide the configuration as environment variables (masked secrets) and call the tool after your tests run. Example GitHub Actions step:
+Run your test framework first, then upload the generated report. Provide credentials through your pipeline's secret store. For GitHub Actions, add a step after your existing test step:
 
 ```yaml
-- name: Upload results to Vansah
+- name: Upload Cucumber results to Vansah
+  if: ${{ !cancelled() }}
   env:
     VANSAH_TOKEN: ${{ secrets.VANSAH_TOKEN }}
-    VANSAH_URL: https://prod.vansah.com
+    VANSAH_URL: ${{ vars.VANSAH_URL }}
     VANSAH_PROJECT_KEY: DEMO
+    VANSAH_ENVIRONMENT_NAME: CI
   run: |
-    npm i -g @vansah/vansah-connect
+    npm install --global @vansah/vansah-connect
     vansah-connect -f ./cucumber.json --format cucumber -a DEMO-9
 ```
 
-And that's it! With `vansah-connect`, you've streamlined the integration of your automation test results into Vansah, making your testing and test management process even more efficient and seamless.
+Configure `VANSAH_URL` for your workspace and ensure the report is generated even when tests fail. The upload step runs after a failed test step unless the job was cancelled. Cucumber import counts describe importing results, not how many scenarios passed or failed. The summary shows counts only, for example `Imported 3, Failed 0, Skipped 0`; individual case keys are omitted.
 
-## Developed By
+For a broader walkthrough, see [How to send test results to Vansah from your CI/CD pipeline](https://help.vansah.com/en/articles/16230699-how-to-send-test-results-to-vansah-from-your-ci-cd-pipeline).
 
-[Vansah](https://vansah.com/)
-</content>
-</invoke>
+## Local development
+
+Clone the source and install dependencies from the package directory:
+
+```bash
+git clone https://github.com/testpointcorp/vansah-connect.git
+cd vansah-connect
+npm ci --prefix package
+node package/bin/index.js --help
+```
+
+The repository separates published code from development files:
+
+```text
+vansah-connect/
+├── README.md
+├── .env.example             # template for local test settings
+├── package/
+│   ├── package.json          # npm metadata, dependencies, and file allowlist
+│   ├── package-lock.json
+│   ├── README.md             # README included on npm
+│   ├── bin/index.js          # CLI options and routing
+│   ├── api/sendresults.js    # Vansah API requests
+│   ├── const.js
+│   └── utility/              # configuration, validation, and output
+└── test/
+    ├── TESTING-GUIDE.md      # dataset, workspace setup, and test instructions
+    ├── new-functionality.test.mjs
+    ├── regression.test.mjs
+    ├── support/
+    │   └── harness.mjs       # loads settings and runs the CLI against Vansah
+    └── fixtures/            # existing Cucumber/TestNG reports and invalid samples
+```
+
+There is no build step: the CLI uses JavaScript ES modules directly. Run the checkout with `node package/bin/index.js` from the repository root to avoid invoking an older global installation.
+
+For an optional global development link:
+
+```bash
+cd package
+npm link
+cd ..
+vansah-connect --help
+```
+
+To remove that link later, run `npm uninstall --global @vansah/vansah-connect`. Reinstall the published package if needed.
+
+## Local testing
+
+Use Node.js 22 or later and run commands from the repository root. These tests run the actual CLI and send real requests to Vansah. Uploaded results remain in your workspace.
+
+1. Install dependencies with `npm ci --prefix package`.
+2. Copy [`.env.example`](.env.example) to `.env`. If `.env` already exists, add missing settings without overwriting your values.
+3. Fill in your workspace URL, credentials, project, case, issue/folder, plan keys, and report paths. The example uses the current NEW2 test dataset; change it for your workspace.
+4. Review [test/TESTING-GUIDE.md](test/TESTING-GUIDE.md) before running tests. It explains the current dataset, how to update both report files, and which cases and iterations must exist first.
+5. Run the full suite or one test file:
+
+```bash
+npm test --prefix package                 # both files, sequentially
+npm run test:integration --prefix package # alias for both files
+npm run test:functional --prefix package  # new functionality
+npm run test:regression --prefix package  # existing behavior
+```
+
+The test files are:
+
+- `test/new-functionality.test.mjs`: iteration validation, result statuses, file checks, configuration permissions, and Cucumber and single-result uploads to STP/ATP.
+- `test/regression.test.mjs`: CLI syntax, original result statuses, issue/folder/STP results, Cucumber and TestNG imports, and malformed-report rejection.
+- `test/support/harness.mjs`: reads the repository-root `.env`, runs the CLI, and captures real platform responses. Shell/CI variables override the file. Saved user settings are isolated from these tests.
+
+Set `VANSAH_TEST_ENV_FILE` to use a different environment file. Relative environment-file and report paths resolve from the repository root. The harness uploads your existing reports unchanged; it does not generate them. Configuration-saving tests use a temporary directory and leave your saved CLI settings unchanged.
+
+A complete run should have no failures or skips. `SKIP` means a required test setting is missing and that flow was not checked. Cucumber tests compare the import count with the report's scenario count and require zero failed or skipped imports. A failed scenario can still be imported successfully.
+
+The suite checks platform responses but does not read back stored runs through a separate API call. Inspect the resulting runs in Vansah when checking the final recorded data. Tests, fixtures, and the testing guide are in the source checkout, not the installed npm package.
+
+## Packaging and publishing
+
+The npm package root is `package/`. Preview exactly what will ship:
+
+```bash
+cd package
+npm pack --dry-run
+npm pack
+```
+
+`npm pack` creates `vansah-vansah-connect-<version>.tgz` locally. To smoke-test that artifact, install it on a test machine:
+
+```bash
+npm install --global ./vansah-vansah-connect-<version>.tgz
+vansah-connect --help
+```
+
+Replace `<version>` with the version in `package/package.json`. Global installation replaces any global package/link with the same name.
+
+The `files` allowlist includes the six runtime JavaScript files. npm also includes `package.json` and the package README: eight files total. Tests, fixtures, `.env` files, workflows, `node_modules`, and the development lockfile are excluded. Add new runtime modules to the allowlist when needed. npm installs runtime dependencies separately.
+
+Keep the repository and package READMEs consistent. Update the package version and lockfile together before a release, run the relevant tests, and inspect the pack output. When ready to publish with an npm account authorized for the `@vansah` scope, run from `package/`:
+
+```bash
+npm publish --access public
+```
+
+## Troubleshooting
+
+| Symptom | What to check |
+| --- | --- |
+| Missing token | Set `VANSAH_TOKEN` or save a token with `-c`. |
+| Authentication rejected even though the token has not expired | Check that `VANSAH_URL` matches your workspace and that the configured token is correct. If your Atlassian connection needs authorization again, reconnect Vansah and retry. The error alone does not prove the token has expired. |
+| `Project key is missing` or `Please provide space information` | Set `VANSAH_PROJECT_KEY` or run `vansah-connect -p <PROJECT_KEY>`. If it is already set, check which settings are taking precedence and that you are running the current CLI. |
+| Unexpected configuration | Check shell variables, then `~/.vansah-connect/.env`, then the current directory's `.env`. |
+| `--format is required` | Add `--format cucumber` or `--format testng`. |
+| `jiraIssueKey must be in format 'PROJECT-123'` | Use an issue key with `-a`; select plan keys using `--stp` or `--atp`. |
+| ATP requires context | Add `-a <issue-key-or-folder-path>` alongside the ATP selector. |
+| Invalid iteration | Supply one positive whole number, for example `--itr 2`. |
+| `Iteration ... not found` | Create that iteration in the selected Vansah Test Plan first, or choose an existing one. Uploading results does not create it. |
+| Missing `.env` when running tests | Copy `.env.example` to `.env` in the repository root and fill in the settings. Follow `test/TESTING-GUIDE.md`. |
+| Report file not found | Check the path and make sure your test runner has produced the report. For repository tests, relative report paths start at the repository root. |
+| `Imported 0, Failed 3` | The imports failed; this does not mean three scenarios failed. Inspect the API response or backend logs. |
+| Missing expected flags | Check `vansah-connect --version` and whether you are running the checkout or a published release. |
+
+The current Cucumber CLI can print a success checkmark and exit `0` when the API returns HTTP `200` with `success: true`, even if its import failure count is nonzero. It also omits warnings from that success response. Do not use that exit code alone as proof that every test result was imported.
+
+## Support
+
+Report package issues at [GitHub Issues](https://github.com/testpointcorp/vansah-connect/issues). Include the command, package version, report format, and sanitized response; omit tokens and sensitive report contents.
+
+Developed by [Vansah](https://vansah.com/).

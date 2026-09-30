@@ -1,10 +1,21 @@
 {
   "name": "@vansah/vansah-connect",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "A Single Solution for all the CI/CD tools to send Test results to Vansah Test Management for Jira",
   "main": "bin/index.js",
+  "files": [
+    "bin/index.js",
+    "api/sendresults.js",
+    "const.js",
+    "utility/displayOutput.js",
+    "utility/env.js",
+    "utility/validation.js"
+  ],
   "scripts": {
-    "test": "mocha -r esm cli.test.js --timeout 10000"
+    "test": "node --test --test-concurrency=1 ../test/*.test.mjs",
+    "test:integration": "node --test --test-concurrency=1 ../test/*.test.mjs",
+    "test:functional": "node --test ../test/new-functionality.test.mjs",
+    "test:regression": "node --test ../test/regression.test.mjs"
   },
   "author": "Vansah",
   "license": "ISC",
@@ -13,7 +24,7 @@
     "axios": "^1.18.0",
     "chalk": "2.4",
     "dotenv": "^16.3.1",
-    "form-data": "^4.0.0",
+    "form-data": "^4.0.6",
     "ora": "^7.0.1",
     "yargs": "13.2"
   },
