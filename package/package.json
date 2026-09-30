@@ -46,5 +46,8 @@
   "bugs": {
     "url": "https://github.com/testpointcorp/vansah-connect/issues"
   },
-  "homepage": "https://github.com/testpointcorp/vansah-connect#readme"
+  "homepage": "https://github.com/testpointcorp/vansah-connect#readme",
+  "engines": {
+    "node": ">=18"
+  }
 }
